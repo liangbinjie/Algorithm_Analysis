@@ -43,7 +43,7 @@ This command will generate the executable file.
 
 4. Run the program
 ```bash
-$ ./main
+$ ./a.out
 ```
 
 Note: Ensure you have GCC compiler and NASM assembler installed on your system. The Makefile assumes these are available in your system path.
