@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 // Global variables
-int N = 200000;
+int N = 50000;
 int num1[4] = {0,0,0,0};
 int num2[4] = {0,0,0,0};
 
@@ -84,7 +84,7 @@ int main() {
         num2[i] = rand() % 1000;
     }
 
-    printf("N: %d\n\n", N);
+    printf("N: %d\n", N);
 
     clock_t begin = clock();
     printf("nullMul(A * B)\n");
@@ -144,7 +144,7 @@ int main() {
 
     clock_t end = clock();
     time_spentTable = (double)(end - begin) / (CLOCKS_PER_SEC / 1000);
-    printf("\nTiempo de ejecución total de las dos tablas: %2.3f ms\n\n", time_spentTable);
+    printf("\nExecution time taken from both tables: %2.3f ms\n\n", time_spentTable);
 
     time_multplications = 0.0;
 
@@ -173,7 +173,6 @@ int main() {
         printf("\n");
     }
     printf("\nExecution time multiplying A * B returning 0 in ASM: %2.3f ms\n", time_multplications);
-
 
     time_multplications = 0.0;
 
