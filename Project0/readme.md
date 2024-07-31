@@ -46,16 +46,16 @@ This command will generate the executable file.
 $ ./main
 ```
 
-Note: Ensure you have a C compiler (such as gcc) and an assembler (such as NASM) installed on your system. The Makefile assumes these are available in your system path.
+Note: Ensure you have GCC compiler and NASM assembler installed on your system. The Makefile assumes these are available in your system path.
 
 ## Dependencies
 
 To compile and run this program, you'll need the following:
 
-1. C Compiler (e.g., GCC)
+1. GCC - C Compiler
    - Used to compile the C portions of the code
 
-2. Assembler (e.g., NASM - Netwide Assembler)
+2. NASM - Netwide Assembler
    - Used to assemble the Assembly portions of the code
    - Available in `Resources`, for installation:
 ```bash

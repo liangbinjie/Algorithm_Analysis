@@ -1,7 +1,7 @@
 global standardMulASM, nullMulASM, russianMulASM
 ; Compile with:
 ; nasm -f elf64 main.asm 
-; gcc -Wall main.c main.o 
+; gcc -Wall <c_file> <asm_obj>
 
 section .text
 
@@ -17,24 +17,24 @@ nullMulASM:
     ret
 
 russianMulASM:
-    mov rdx, 0        ; initialize result to 0
+    mov rdx, 0            ; initialize result to 0
     
-russianMulASM_while:
-    cmp rsi, 0        ; check if b (rsi) is 0
-    je russianMulASM_end
+    russianMulASM_while:
+        cmp rsi, 0        ; check if b (rsi) is 0
+        je russianMulASM_end
 
-    test rsi, 1       ; check if b is odd
-    jz russianMulASM_even
+        test rsi, 1       ; check if b is odd
+        jz russianMulASM_even
 
-    add rdx, rdi      ; if b is odd, add a (rdi) to result
+        add rdx, rdi      ; if b is odd, add a (rdi) to result
 
-russianMulASM_even:
-    shr rsi, 1        ; divide b by 2
-    shl rdi, 1        ; multiply a by 2
-    jmp russianMulASM_while
+    russianMulASM_even:
+        shr rsi, 1        ; divide b by 2
+        shl rdi, 1        ; multiply a by 2
+        jmp russianMulASM_while
 
-russianMulASM_end:
-    mov rax, rdx      ; move result to rax
-    ret
+    russianMulASM_end:
+        mov rax, rdx      ; move result to rax
+        ret
 
     
