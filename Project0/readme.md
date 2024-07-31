@@ -57,6 +57,13 @@ To compile and run this program, you'll need the following:
 
 2. Assembler (e.g., NASM - Netwide Assembler)
    - Used to assemble the Assembly portions of the code
+   - Available in `Resources`, for installation:
+```bash
+# After unzipping nasm-2.16.03.tar.gz files
+# Navigate to the directory
+$ ./configure
+$ sudo make install
+```
 
 3. Make
    - Used to automate the compilation process

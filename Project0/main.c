@@ -2,10 +2,19 @@
 #include <time.h>
 #include <stdlib.h>
 
-int num1[4] = {0,0,0,0}; 
+// Variables globales
+int times = 100000;
+int num1[4] = {0,0,0,0};
 int num2[4] = {0,0,0,0};
 
+// Declaración de funciones en ASM
+int standardMulASM(int a, int b);
 
+int russianMulASM(int a, int b);
+
+int nullMulASM(int a, int b);
+
+// Declaración de funciones en C
 int multiplicar(int a, int b) {
     return a * b;
 }
@@ -30,28 +39,18 @@ int multiplicarAntiguo(int a, int b) {
     return resultado;
 }
 
-void printList(int *list) {
-    for (int i = 0; i < 4; i++) {
-        printf("%d ", list[i]);
-    }
-    printf("\n");
-}
 
+// Main function
 int main() {  
-    srand(time(0));
+    srand(time(0));                         // genera la seed
 
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < 4; i++) {           // asignar numero randoms a la tabla
         num1[i] = rand() % 1000;
         num2[i] = rand() % 1000;
     }
 
-
-    clock_t begin = clock();
-    int times = 50000;
     double time_spentInd = 0.0;
-
-    printf("N Times: %d\n",times);
-
+    double time_spentTable = 0.0;
     printf("Versión Vacía A * B\n");
     printf("          |");
 
@@ -59,26 +58,28 @@ int main() {
         printf("%35d|", num2[columna]);
     }
     printf("\n");
-
+    clock_t begin = clock();
     for (int fila = 0; fila < 4; fila++) {
         printf("%-10d|", num1[fila]);
         for (int columna = 0; columna < 4; columna++) {
             time_spentInd = 0.0; 
             for (int timesToLoop = 0; timesToLoop < times; timesToLoop++){
                 clock_t beginIndividual = clock();
-                multiplicar(num1[fila], num2[columna]);
+                multiplicarVacio(num1[fila], num2[columna]);
                 clock_t endIndividual = clock(); 
                 time_spentInd += (double)(endIndividual - beginIndividual) / CLOCKS_PER_SEC;
+                time_spentTable += (double)(endIndividual - beginIndividual) / CLOCKS_PER_SEC;
 
             }
             printf(" %3d * %3d = %6d / %2.10f |", num1[fila], num2[columna], multiplicarVacio(num1[fila], num2[columna]), time_spentInd);
         }
         printf("\n");
     }
+    printf("\nTiempo de ejecución en el orden A * B de la versión vacía: %f\n", time_spentTable);
 
-    printf("Versión Vacía B * A\n");
+    printf("\nVersión Vacía B * A\n");
     printf("          |");
-
+    time_spentTable = 0.0;
     for (int columna = 0; columna < 4; columna++) {
         printf("%35d|", num1[columna]);
     }
@@ -90,23 +91,27 @@ int main() {
             time_spentInd = 0.0; 
             for (int timesToLoop = 0; timesToLoop < times; timesToLoop++){
                 clock_t beginIndividual = clock();
-                multiplicar(num2[fila], num1[columna]);
+                multiplicarVacio(num2[fila], num1[columna]);
                 clock_t endIndividual = clock(); 
                 time_spentInd += (double)(endIndividual - beginIndividual) / CLOCKS_PER_SEC;
-
+                time_spentTable += (double)(endIndividual - beginIndividual) / CLOCKS_PER_SEC;
             }
             printf(" %3d * %3d = %6d / %2.10f |", num2[fila], num1[columna], multiplicarVacio(num2[fila], num1[columna]), time_spentInd);
         }
         printf("\n");
     }
+
+    printf("\nTiempo de ejecución en el orden B * A de la versión vacía: %f\n", time_spentTable);
+
     clock_t end = clock();
     double time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
-    printf("Tiempo de ejecucion: %f\n", time_spent);
+    printf("\nTiempo de ejecucion total de la versión vacía: %f\n", time_spent);
 
+    printf("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
 
-    begin = clock();
     time_spentInd = 0.0;
     time_spent = 0.0;
+    time_spentTable = 0.0;
 
     printf("Versión Estandár A * B\n");
     printf("          |");
@@ -116,6 +121,7 @@ int main() {
     }
     printf("\n");
 
+    begin = clock();
     for (int fila = 0; fila < 4; fila++) {
         printf("%-10d|", num1[fila]);
         for (int columna = 0; columna < 4; columna++) {
@@ -125,16 +131,18 @@ int main() {
                 multiplicar(num1[fila], num2[columna]);
                 clock_t endIndividual = clock(); 
                 time_spentInd += (double)(endIndividual - beginIndividual) / CLOCKS_PER_SEC;
-
+                time_spentTable += (double)(endIndividual - beginIndividual) / CLOCKS_PER_SEC;
             }
             printf(" %3d * %3d = %6d / %2.10f |", num1[fila], num2[columna], multiplicar(num1[fila], num2[columna]), time_spentInd);
         }
         printf("\n");
     }
 
-    printf("Versión Estandár B * A\n");
-    printf("          |");
+    printf("\nTiempo de ejecución en el orden A * B de la versión normal: %f\n", time_spentTable);
 
+    printf("\nVersión Estandár B * A\n");
+    printf("          |");
+    time_spentTable = 0.0;
     for (int columna = 0; columna < 4; columna++) {
         printf("%35d|", num1[columna]);
     }
@@ -149,19 +157,24 @@ int main() {
                 multiplicar(num2[fila], num1[columna]);
                 clock_t endIndividual = clock(); 
                 time_spentInd += (double)(endIndividual - beginIndividual) / CLOCKS_PER_SEC;
-
+                time_spentTable += (double)(endIndividual - beginIndividual) / CLOCKS_PER_SEC;
             }
             printf(" %3d * %3d = %6d / %2.10f |", num2[fila], num1[columna], multiplicar(num2[fila], num1[columna]), time_spentInd);
         }
         printf("\n");
     }
+
+    printf("\nTiempo de ejecución en el orden B * A de la versión normal: %f\n", time_spentTable);
+
     end = clock();
     time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
-    printf("Tiempo de ejecucion: %f\n", time_spent);
+    printf("\nTiempo de ejecucion total de la versión normal: %f\n", time_spent);
 
-    begin = clock();
+    printf("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
+
     time_spentInd = 0.0;
     time_spent = 0.0;
+    time_spentTable = 0.0;
 
     printf("Versión Antigua A * B\n");
     printf("          |");
@@ -171,25 +184,28 @@ int main() {
     }
     printf("\n");
 
+    begin = clock();
     for (int fila = 0; fila < 4; fila++) {
         printf("%-10d|", num1[fila]);
         for (int columna = 0; columna < 4; columna++) {
             time_spentInd = 0.0; 
             for (int timesToLoop = 0; timesToLoop < times; timesToLoop++){
                 clock_t beginIndividual = clock();
-                multiplicar(num1[fila], num2[columna]);
+                multiplicarAntiguo(num1[fila], num2[columna]);
                 clock_t endIndividual = clock(); 
                 time_spentInd += (double)(endIndividual - beginIndividual) / CLOCKS_PER_SEC;
-
+                time_spentTable += (double)(endIndividual - beginIndividual) / CLOCKS_PER_SEC;
             }
             printf(" %3d * %3d = %6d / %2.10f |", num1[fila], num2[columna], multiplicarAntiguo(num1[fila], num2[columna]), time_spentInd);
         }
         printf("\n");
     }
 
-    printf("Versión Antigua B * A\n");
-    printf("          |");
+    printf("\nTiempo de ejecución en el orden A * B de la versión antigua: %f\n", time_spentTable);
 
+    printf("\nVersión Antigua B * A\n");
+    printf("          |");
+    time_spentTable = 0.0;
     for (int columna = 0; columna < 4; columna++) {
         printf("%35d|", num1[columna]);
     }
@@ -201,22 +217,23 @@ int main() {
             time_spentInd = 0.0; 
             for (int timesToLoop = 0; timesToLoop < times; timesToLoop++){
                 clock_t beginIndividual = clock();
-                multiplicar(num2[fila], num1[columna]);
+                multiplicarAntiguo(num2[fila], num1[columna]);
                 clock_t endIndividual = clock(); 
                 time_spentInd += (double)(endIndividual - beginIndividual) / CLOCKS_PER_SEC;
-
+                time_spentTable += (double)(endIndividual - beginIndividual) / CLOCKS_PER_SEC;
             }
             printf(" %3d * %3d = %6d / %2.10f |", num2[fila], num1[columna], multiplicarAntiguo(num2[fila], num1[columna]), time_spentInd);
         }
         printf("\n");
     }
+
+    printf("\nTiempo de ejecución en el orden B * A de la versión antigua: %f\n", time_spentTable);
+
     end = clock();
     time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
-    printf("Tiempo de ejecucion: %f\n", time_spent);
-   
-    printList(num1);
-    printList(num2);
+    printf("\nTiempo de ejecucion total de la versión antigua: %f\n", time_spent);
 
+    printf("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
 
     return 0;
 }
