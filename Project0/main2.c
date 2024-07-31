@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 // Global variables
-int N = 50000;
+int N = 200000;
 int num1[4] = {0,0,0,0};
 int num2[4] = {0,0,0,0};
 
@@ -112,7 +112,7 @@ int main() {
         }
         printf("\n");
     }
-    printf("\nTiempo de ejecución en el orden A * B de la versión vacía: %2.3f ms\n", time_multplications);
+    printf("\nExecution time multiplying A * B returning 0 in C: %2.3f ms\n", time_multplications);
 
 
     time_multplications = 0.0;
@@ -140,7 +140,7 @@ int main() {
         }
         printf("\n");
     }
-    printf("\nTiempo de ejecución en el orden B * A de la versión vacía: %2.3f ms\n", time_multplications);
+    printf("\nExecution time multiplying B * A returning 0 in C: %2.3f ms\n", time_multplications);
 
     clock_t end = clock();
     time_spentTable = (double)(end - begin) / (CLOCKS_PER_SEC / 1000);
@@ -172,7 +172,7 @@ int main() {
         }
         printf("\n");
     }
-    printf("\nTiempo de ejecución en el orden A * B de la versión vacía ASM: %2.3f ms\n", time_multplications);
+    printf("\nExecution time multiplying A * B returning 0 in ASM: %2.3f ms\n", time_multplications);
 
 
     time_multplications = 0.0;
@@ -200,11 +200,11 @@ int main() {
         }
         printf("\n");
     }
-    printf("\nTiempo de ejecución en el orden B * A de la versión vacía ASM: %2.3f ms\n", time_multplications);
+    printf("\nExecution time multiplying B * A returning 0 in ASM: %2.3f ms\n", time_multplications);
     
     end = clock();
     time_spentTable = (double)(end - begin) / (CLOCKS_PER_SEC / 1000);
-    printf("\nTiempo de ejecución total de las dos tablas: %2.3f ms\n\n", time_spentTable);
+    printf("\nExecution time taken from both tables: %2.3f ms\n\n", time_spentTable);
 
     getc(stdin);
 
@@ -235,7 +235,7 @@ int main() {
         }
         printf("\n");
     }
-    printf("\nTiempo de ejecución en el orden A * B de la versión standard: %2.3f ms\n", time_multplications);
+    printf("\nExecution time multiplying A * B using standard method in C: %2.3f ms\n", time_multplications);
 
 
     time_multplications = 0.0;
@@ -263,11 +263,11 @@ int main() {
         }
         printf("\n");
     }
-    printf("\nTiempo de ejecución en el orden B * A de la versión standard: %2.3f ms\n", time_multplications);
+    printf("\nExecution time multiplying B * A using standard method in C: %2.3f ms\n", time_multplications);
 
     end = clock();
     time_spentTable = (double)(end - begin) / (CLOCKS_PER_SEC / 1000);
-    printf("\nTiempo de ejecución total de las dos tablas: %2.3f ms\n\n", time_spentTable);
+    printf("\nExecution time taken from both tables: %2.3f ms\n\n", time_spentTable);
 
     time_multplications = 0.0;
 
@@ -294,7 +294,7 @@ int main() {
         }
         printf("\n");
     }
-    printf("\nTiempo de ejecución en el orden A * B de la versión standard ASM: %2.3f ms\n", time_multplications);
+    printf("\nExecution time multiplying A * B using standard method in ASM: %2.3f ms\n", time_multplications);
 
 
     time_multplications = 0.0;
@@ -322,11 +322,11 @@ int main() {
         }
         printf("\n");
     }
-    printf("\nTiempo de ejecución en el orden B * A de la versión standard ASM: %2.3f ms\n", time_multplications);
+    printf("\nExecution time multiplying B * A using standard method in ASM: %2.3f ms\n", time_multplications);
     
     end = clock();
     time_spentTable = (double)(end - begin) / (CLOCKS_PER_SEC / 1000);
-    printf("\nTiempo de ejecución total de las dos tablas: %2.3f ms\n\n", time_spentTable);
+    printf("\nExecution time taken from both tables: %2.3f ms\n\n", time_spentTable);
 
 
     getc(stdin);
@@ -357,7 +357,7 @@ int main() {
         }
         printf("\n");
     }
-    printf("\nTiempo de ejecución en el orden A * B de la versión russian: %2.3f ms\n", time_multplications);
+    printf("\nExecution time multiplying A * B using russian method in C: %2.3f ms\n", time_multplications);
 
 
     time_multplications = 0.0;
@@ -385,11 +385,11 @@ int main() {
         }
         printf("\n");
     }
-    printf("\nTiempo de ejecución en el orden B * A de la versión russian: %2.3f ms\n", time_multplications);
+    printf("\nExecution time multiplying B * A using russian method in C: %2.3f ms\n", time_multplications);
 
     end = clock();
     time_spentTable = (double)(end - begin) / (CLOCKS_PER_SEC / 1000);
-    printf("\nTiempo de ejecución total de las dos tablas: %2.3f ms\n\n", time_spentTable);
+    printf("\nExecution time taken from both tables: %2.3f ms\n\n", time_spentTable);
 
     time_multplications = 0.0;
 
@@ -416,7 +416,7 @@ int main() {
         }
         printf("\n");
     }
-    printf("\nTiempo de ejecución en el orden A * B de la versión russian ASM: %2.3f ms\n", time_multplications);
+    printf("\nExecution time multiplying A * B using russian method in ASM: %2.3f ms\n", time_multplications);
 
 
     time_multplications = 0.0;
@@ -444,11 +444,11 @@ int main() {
         }
         printf("\n");
     }
-    printf("\nTiempo de ejecución en el orden B * A de la versión russian ASM: %2.3f ms\n", time_multplications);
+    printf("\nExecution time multiplying B * A using russian method in ASM: %2.3f ms\n", time_multplications);
     
     end = clock();
     time_spentTable = (double)(end - begin) / (CLOCKS_PER_SEC / 1000);
-    printf("\nTiempo de ejecución total de las dos tablas: %2.3f ms\n\n", time_spentTable);
+    printf("\nExecution time taken from both tables: %2.3f ms\n\n", time_spentTable);
 
     return 0;
 
