@@ -80,8 +80,8 @@ int main() {
     srand(time(0));                 // seed generation
 
     for (int i = 0; i < 4; i++) {   // assign random numbers to the table
-        num1[i] = rand() % 1000;
-        num2[i] = rand() % 1000;
+        num1[i] = rand() % 10000;
+        num2[i] = rand() % 10000;
     }
 
     printf("N: %d\n", N);
@@ -108,7 +108,7 @@ int main() {
                 time_spentInd += (double)(endInd - beginInd) / (CLOCKS_PER_SEC / 1000);
                 time_multplications += (double)(endInd - beginInd) / (CLOCKS_PER_SEC / 1000);
             }
-            printf(" %3d * %3d = %6d / %2.6f ms |", num1[fila], num2[columna], nullMul(num1[fila], num2[columna]), time_spentInd);
+            printf(" %4d * %4d = %8d / %2.2f ms |", num1[fila], num2[columna], nullMul(num1[fila], num2[columna]), time_spentInd);
         }
         printf("\n");
     }
@@ -136,7 +136,7 @@ int main() {
                 time_spentInd += (double)(endInd - beginInd) / (CLOCKS_PER_SEC / 1000);
                 time_multplications += (double)(endInd - beginInd) / (CLOCKS_PER_SEC / 1000);
             }
-            printf(" %3d * %3d = %6d / %2.6f ms |", num2[fila], num1[columna], nullMul(num2[fila], num1[columna]), time_spentInd);
+            printf(" %4d * %4d = %8d / %2.2f ms |", num2[fila], num1[columna], nullMul(num2[fila], num1[columna]), time_spentInd);
         }
         printf("\n");
     }
@@ -168,7 +168,7 @@ int main() {
                 time_spentInd += (double)(endInd - beginInd) / (CLOCKS_PER_SEC / 1000);
                 time_multplications += (double)(endInd - beginInd) / (CLOCKS_PER_SEC / 1000);
             }
-            printf(" %3d * %3d = %6d / %2.6f ms |", num1[fila], num2[columna], nullMulASM(num1[fila], num2[columna]), time_spentInd);
+            printf(" %4d * %4d = %8d / %2.2f ms |", num1[fila], num2[columna], nullMulASM(num1[fila], num2[columna]), time_spentInd);
         }
         printf("\n");
     }
@@ -195,7 +195,7 @@ int main() {
                 time_spentInd += (double)(endInd - beginInd) / (CLOCKS_PER_SEC / 1000);
                 time_multplications += (double)(endInd - beginInd) / (CLOCKS_PER_SEC / 1000);
             }
-            printf(" %3d * %3d = %6d / %2.6f ms |", num2[fila], num1[columna], nullMulASM(num2[fila], num1[columna]), time_spentInd);
+            printf(" %4d * %4d = %8d / %2.2f ms |", num2[fila], num1[columna], nullMulASM(num2[fila], num1[columna]), time_spentInd);
         }
         printf("\n");
     }
@@ -230,7 +230,7 @@ int main() {
                 time_spentInd += (double)(endInd - beginInd) / (CLOCKS_PER_SEC / 1000);
                 time_multplications += (double)(endInd - beginInd) / (CLOCKS_PER_SEC / 1000);
             }
-            printf(" %3d * %3d = %6d / %2.6f ms |", num1[fila], num2[columna], standardMul(num1[fila], num2[columna]), time_spentInd);
+            printf(" %4d * %4d = %8d / %2.2f ms |", num1[fila], num2[columna], standardMul(num1[fila], num2[columna]), time_spentInd);
         }
         printf("\n");
     }
@@ -258,7 +258,7 @@ int main() {
                 time_spentInd += (double)(endInd - beginInd) / (CLOCKS_PER_SEC / 1000);
                 time_multplications += (double)(endInd - beginInd) / (CLOCKS_PER_SEC / 1000);
             }
-            printf(" %3d * %3d = %6d / %2.6f ms |", num2[fila], num1[columna], standardMul(num2[fila], num1[columna]), time_spentInd);
+            printf(" %4d * %4d = %8d / %2.2f ms |", num2[fila], num1[columna], standardMul(num2[fila], num1[columna]), time_spentInd);
         }
         printf("\n");
     }
@@ -289,7 +289,7 @@ int main() {
                 time_spentInd += (double)(endInd - beginInd) / (CLOCKS_PER_SEC / 1000);
                 time_multplications += (double)(endInd - beginInd) / (CLOCKS_PER_SEC / 1000);
             }
-            printf(" %3d * %3d = %6d / %2.6f ms |", num1[fila], num2[columna], standardMulASM(num1[fila], num2[columna]), time_spentInd);
+            printf(" %4d * %4d = %8d / %2.2f ms |", num1[fila], num2[columna], standardMulASM(num1[fila], num2[columna]), time_spentInd);
         }
         printf("\n");
     }
@@ -317,7 +317,7 @@ int main() {
                 time_spentInd += (double)(endInd - beginInd) / (CLOCKS_PER_SEC / 1000);
                 time_multplications += (double)(endInd - beginInd) / (CLOCKS_PER_SEC / 1000);
             }
-            printf(" %3d * %3d = %6d / %2.6f ms |", num2[fila], num1[columna], standardMulASM(num2[fila], num1[columna]), time_spentInd);
+            printf(" %4d * %4d = %8d / %2.2f ms |", num2[fila], num1[columna], standardMulASM(num2[fila], num1[columna]), time_spentInd);
         }
         printf("\n");
     }
@@ -352,7 +352,7 @@ int main() {
                 time_spentInd += (double)(endInd - beginInd) / (CLOCKS_PER_SEC / 1000);
                 time_multplications += (double)(endInd - beginInd) / (CLOCKS_PER_SEC / 1000);
             }
-            printf(" %3d * %3d = %6d / %2.6f ms |", num1[fila], num2[columna], russianMul(num1[fila], num2[columna]), time_spentInd);
+            printf(" %4d * %4d = %8d / %2.2f ms |", num1[fila], num2[columna], russianMul(num1[fila], num2[columna]), time_spentInd);
         }
         printf("\n");
     }
@@ -380,7 +380,7 @@ int main() {
                 time_spentInd += (double)(endInd - beginInd) / (CLOCKS_PER_SEC / 1000);
                 time_multplications += (double)(endInd - beginInd) / (CLOCKS_PER_SEC / 1000);
             }
-            printf(" %3d * %3d = %6d / %2.6f ms |", num2[fila], num1[columna], russianMul(num2[fila], num1[columna]), time_spentInd);
+            printf(" %4d * %4d = %8d / %2.2f ms |", num2[fila], num1[columna], russianMul(num2[fila], num1[columna]), time_spentInd);
         }
         printf("\n");
     }
@@ -411,7 +411,7 @@ int main() {
                 time_spentInd += (double)(endInd - beginInd) / (CLOCKS_PER_SEC / 1000);
                 time_multplications += (double)(endInd - beginInd) / (CLOCKS_PER_SEC / 1000);
             }
-            printf(" %3d * %3d = %6d / %2.6f ms |", num1[fila], num2[columna], russianMulASM(num1[fila], num2[columna]), time_spentInd);
+            printf(" %4d * %4d = %8d / %2.2f ms |", num1[fila], num2[columna], russianMulASM(num1[fila], num2[columna]), time_spentInd);
         }
         printf("\n");
     }
@@ -439,7 +439,7 @@ int main() {
                 time_spentInd += (double)(endInd - beginInd) / (CLOCKS_PER_SEC / 1000);
                 time_multplications += (double)(endInd - beginInd) / (CLOCKS_PER_SEC / 1000);
             }
-            printf(" %3d * %3d = %6d / %2.6f ms |", num2[fila], num1[columna], russianMul(num2[fila], num1[columna]), time_spentInd);
+            printf(" %4d * %4d = %8d / %2.2f ms |", num2[fila], num1[columna], russianMul(num2[fila], num1[columna]), time_spentInd);
         }
         printf("\n");
     }
