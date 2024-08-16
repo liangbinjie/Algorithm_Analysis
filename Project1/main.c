@@ -37,7 +37,7 @@ int main() {
 
     while (validInput == 0) {                                   // while loop to keep asking for input until it is valid
 
-        printf("Please enter 16 capital letters: \n");
+        printf("Please enter %d capital letters: \n", size);
         fgets(textInput, sizeof(textInput), stdin);
         if (checkString(textInput) == 1) {                      // check if the input is valid
             validInput = 1;
@@ -56,6 +56,7 @@ int main() {
     file = fopen("AA_PR01.tex", "a");
     createTable(file, "Bubble Sort", textInput);
     // here goes execution table
+    bubbleSort(file, textInput);
     closeTable(file, "Bubble Sort");
 
     file = fopen("AA_PR01.tex", "a");

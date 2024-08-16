@@ -4,6 +4,7 @@ int size = 16;
 char latexOutput[] = "";
 
 void bubbleSort(FILE* file, char list[]) {
+    int row = 0;
     for (int i = 0; i < size; i++) {
         for (int j = 0; j < size - i - 1; j++) {
             if (list[j] > list[j+1]) {
@@ -11,7 +12,15 @@ void bubbleSort(FILE* file, char list[]) {
                 list[j] = list[j+1];
                 list[j+1] = temp;
             }
-            
+            fprintf(file, "{\\bf %d} ", row++);
+            for (int k=0; k < size; k++) {
+                if (k==j || k==j+1) {
+                    fprintf(file, "& \\X{%c} ", list[k]);
+                } else {
+                    fprintf(file, "& \\C{%c} ", list[k]);
+                }
+            }
+            fprintf(file, "\\\\\n");
         }
     }
 }
