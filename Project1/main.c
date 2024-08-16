@@ -1,27 +1,34 @@
 #include <stdio.h>
+#include "algorithms.h"
+#include "latex.h"
 
-int size = 16;                                                  // define global variable for the size of the input          
+// function to create the table, with its title and reference
+void createTable(FILE *file, char sortName[], char textInput[]) {
+    // create section title
+    // create table structure
+    fprintf(file, "\\section{%s}\n%s\n", sortName, tableHeader);
 
-int checkString(char textInput[]) {                             // function to check if the input is valid
+    // label the input
+    for (int i = 0; i < size; i++) {
+        fprintf(file, "& \\B{%c} ", textInput[i]);
+    }
+    fprintf(file, "\\\\\n\\hline\n");
+}
+
+// function to close the table
+void closeTable(FILE *file, char sortName[]) {
+    fprintf(file, "\\end{tabularx}\n\\caption{Execution Trace of \\textbf{%s}}\n\\label{T:%s}\\end{table}\n", sortName, sortName);
+    fclose(file);
+}
+
+// function to check if the input is valid
+int checkString(char textInput[]) {                             
     for (int i = 0; i < size; i++) {
         if (textInput[i] < 'A' || textInput[i] > 'Z') {
             return 0;
         }
     }
     return 1;
-}
-
-void bubbleSort(char list[]) {
-    for (int i = 0; i < size; i++) {
-        for (int j = 0; j < size - i - 1; j++) {
-            if (list[j] > list[j+1]) {
-                char temp = list[j];
-                list[j] = list[j+1];
-                list[j+1] = temp;
-                printf("%s | %c %c\n", list, list[j], list[j+1]);
-            }
-        }
-    }
 }
 
 int main() {
@@ -35,13 +42,25 @@ int main() {
         if (checkString(textInput) == 1) {                      // check if the input is valid
             validInput = 1;
         } else {
-            printf("Invalid input. ");
+            printf("Invalid input. ");                          // print error message
         }
     }
 
-    bubbleSort(textInput);                                      // sort the input in ascending order
-    printf("The sorted input is: %s\n", textInput);             // print the sorted input
+    FILE *file;
+    // Open a file in writing mode and write the latex content
+    file = fopen("AA_PR01.tex", "w");
+    fprintf(file, "%s", latexContent);
+    fclose(file);
 
+    // Open the file in append mode and write the table
+    file = fopen("AA_PR01.tex", "a");
+    createTable(file, "Bubble Sort", textInput);
+    // here goes execution table
+    closeTable(file, "Bubble Sort");
+
+    file = fopen("AA_PR01.tex", "a");
+    fprintf(file, "\\end{document}");
+    fclose(file);
   
     return 0;
 }
