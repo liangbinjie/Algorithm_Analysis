@@ -60,6 +60,9 @@ To compile and run this program, you'll need the following:
    $ sudo apt-get update
    $ sudo apt-get install texlive-latex-base
    ```
+   Note: For other operating systems, check out the following link: https://www.tug.org/texlive/
+   
+   LaTex-Live tgz file can be found on `Resources`
 
 3. Make
    - Used to automate the compilation process
