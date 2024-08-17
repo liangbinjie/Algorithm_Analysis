@@ -1,9 +1,9 @@
 #include <stdio.h>
-
-int size = 16;
-char latexOutput[] = "";
+#include <stdbool.h>
+#include "latex.h"
 
 void bubbleSort(FILE* file, char list[]) {
+    createTable(file, "Bubble Sort", list);
     int row = 0;
     for (int i = 0; i < size; i++) {
         for (int j = 0; j < size - i - 1; j++) {
@@ -21,8 +21,13 @@ void bubbleSort(FILE* file, char list[]) {
                 }
             }
             fprintf(file, "\\\\\n");
+            if (row == 60) {
+                closeTable(file, "Bubble Sort");
+                createTable(file, "Bubble Sort 2", list);
+            }
         }
     }
+    closeTable(file, "Bubble Sort 2");
 }
 
 // format: 
@@ -30,3 +35,4 @@ void bubbleSort(FILE* file, char list[]) {
 // {\\bf %d}
 // & \\C{%c}
 // & \\X{%c}
+
