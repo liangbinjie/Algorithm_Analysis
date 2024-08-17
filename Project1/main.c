@@ -1,6 +1,6 @@
-#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 #include "algorithms.h"
-// #include "latex.h"
 
 // function to check if the input is valid
 int checkString(char textInput[]) {                             
@@ -29,17 +29,19 @@ int main() {
 
     FILE *file;
     // Open a file in writing mode and write the latex content
-    file = fopen("AA_PR01.tex", "w");
+    file = fopen(FILENAME, "w");
     fprintf(file, "%s", latexContent);
     fclose(file);
 
     // Open the file in append mode and write the table
-    file = fopen("AA_PR01.tex", "a");
+    file = fopen(FILENAME, "a");
     // here goes execution table
     bubbleSort(file, textInput);
 
     fprintf(file, "\\end{document}");
     fclose(file);
+
+    system("pdflatex AA_PR01.tex");                     // compile the latex file using pdflatex
   
     return 0;
 }

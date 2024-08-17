@@ -47,9 +47,19 @@ To compile and run this program, you'll need the following:
 1. GCC - C Compiler
    - Used to compile the C portions of the code
 
-2. Evince
+2. Evince - PDF Viewer
+   ```bash
+   # Installation for Debian/Ubuntu Linux
+   $ sudo apt-get update
+   $ sudo apt-get install evince
+   ```
 
-3. LaTex Live
+3. LaTex Live - LaTex PDF generator
+   ```bash
+   # Installation for Debian/Ubuntu Linux
+   $ sudo apt-get update
+   $ sudo apt-get install texlive-latex-base
+   ```
 
 3. Make
    - Used to automate the compilation process

@@ -1,4 +1,5 @@
 int size = 16;
+char FILENAME[] = "AA_PR01.tex";
 
 const char* tableHeader = 
     "\\begin{table}[ht]\n"
