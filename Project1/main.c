@@ -42,6 +42,8 @@ int main() {
     fclose(file);
 
     system("pdflatex AA_PR01.tex");                     // compile the latex file using pdflatex
+
+    // system("evince --presentation AA_PR01.pdf");
   
     return 0;
 }

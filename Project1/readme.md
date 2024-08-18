@@ -59,10 +59,11 @@ To compile and run this program, you'll need the following:
    # Installation for Debian/Ubuntu Linux
    $ sudo apt-get update
    $ sudo apt-get install texlive-latex-base
+   $ sudo apt-get install texlive-publishers          # necessary for IEEE document compilation
    ```
    Note: For other operating systems, check out the following link: https://www.tug.org/texlive/
    
-   LaTex-Live tgz file can be found on `Resources`
+   LaTex-Live tgz file can be found on `Resources/install-tl-unx.tar.gz`
 
 3. Make
    - Used to automate the compilation process
@@ -71,5 +72,5 @@ To compile and run this program, you'll need the following:
    - For basic C functions used in the program
 
 5. Operating System
-   - Linux, Windows with WSL
+   - Ubuntu Linux, Windows with WSL
    
