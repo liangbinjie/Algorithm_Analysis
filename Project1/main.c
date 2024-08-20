@@ -26,17 +26,27 @@ int main() {
             printf("Invalid input. ");                          // print error message
         }
     }
-
+    int row = 0;
     FILE *file;
     // Open a file in writing mode and write the latex content
-    file = fopen(FILENAME, "w");
+    file = fopen("AA_PR01.tex", "w");
     fprintf(file, "%s", latexContent);
     fclose(file);
 
     // Open the file in append mode and write the table
-    file = fopen(FILENAME, "a");
+    file = fopen("AA_PR01.tex", "a");
     // here goes execution table
-    bubbleSort(file, textInput);
+    //bubbleSort(file, textInput);
+    //insertionSort(file, textInput);
+    //exchangeSort(file, textInput);
+    //mergeSort(file, textInput, 0, 15, &row);
+    row = 0;
+    //quickSort(file, textInput, 0 , 15, &row);
+    row = 0;
+    //shellSort(file, textInput, size);
+    //gnomeSort(file, textInput);
+    //cocktailSort(file, textInput);
+    stoogeSort(file, textInput, 0, size - 1, &row);
 
     fprintf(file, "\\end{document}");
     fclose(file);
@@ -47,4 +57,3 @@ int main() {
   
     return 0;
 }
-
