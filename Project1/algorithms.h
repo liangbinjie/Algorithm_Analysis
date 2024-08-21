@@ -7,6 +7,8 @@ int checkBubble = 0;
 int checkQuick = 0;
 int checkStooge = 0;
 
+int insertionExpand = 0;
+
 /**
  * Bubble Sort
  *
@@ -55,32 +57,54 @@ void bubbleSort(FILE *file, char list[])
 }
 
 /**
-
+Insertion Sort
  */
 void insertionSort(FILE* file, char list[]) {
     createTable(file, "Insertion Sort", list); 
-    int row = 0; 
+    int row = 0;
+    int kCounter = 0;
 
     for (int i = 1; i < size; i++) {
         char key = list[i];
         int j = i - 1;
 
+        int insertionIndex = i; 
+
         while (j >= 0 && list[j] > key) {
+            fprintf(file, "{\\bf %d} ", row++);
+            for (int k = 0; k < size; k++) {
+                if (k == j || k == i) {
+                    fprintf(file, "& \\X{%c} ", list[k]);  
+                } else {
+                    fprintf(file, "& \\C{%c} ", list[k]);
+                }
+            }
+            fprintf(file, "\\\\\n");
             list[j + 1] = list[j];
-            j = j - 1;
+            insertionIndex = j;
+            j--;
+            fprintf(file, "{\\bf %d} ", row++);
+            for (int k = 0; k < size; k++) {
+                if (k == j || k == i) {
+                    fprintf(file, "& \\X{%c} ", list[k]);  
+                } else {
+                    fprintf(file, "& \\C{%c} ", list[k]);
+                }
+            }
+            fprintf(file, "\\\\\n");
         }
         
-        list[j + 1] = key;
+        list[insertionIndex] = key;
 
-        fprintf(file, "{\\bf %d} ", row++); 
+        fprintf(file, "{\\bf %d} ", row++);
         for (int k = 0; k < size; k++) {
-            if (k == j + 1) {
-                fprintf(file, "& \\X{%c} ", list[k]);
+            if (k == insertionIndex || k == i) { //imprime el 
+                fprintf(file, "& \\X{%c} ", list[k]);  
             } else {
-                fprintf(file, "& \\C{%c} ", list[k]);
+                fprintf(file, "& \\C{%c} ", list[k]); 
             }
         }
-        fprintf(file, "\\\\\n"); 
+        fprintf(file, "\\\\\n");
 
         if (row == 60) {
             closeTable(file, "Insertion Sort");
@@ -90,6 +114,7 @@ void insertionSort(FILE* file, char list[]) {
 
     closeTable(file, "Insertion Sort 2");
 }
+
 
 /**
 Go to fix

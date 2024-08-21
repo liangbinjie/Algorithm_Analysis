@@ -37,7 +37,7 @@ int main() {
     file = fopen("AA_PR01.tex", "a");
     // here goes execution table
     //bubbleSort(file, textInput);
-    //insertionSort(file, textInput);
+    insertionSort(file, textInput);
     //exchangeSort(file, textInput);
     //mergeSort(file, textInput, 0, 15, &row);
     row = 0;
@@ -46,7 +46,7 @@ int main() {
     //shellSort(file, textInput, size);
     //gnomeSort(file, textInput);
     //cocktailSort(file, textInput);
-    stoogeSort(file, textInput, 0, size - 1, &row);
+    //stoogeSort(file, textInput, 0, size - 1, &row);
 
     fprintf(file, "\\end{document}");
     fclose(file);
