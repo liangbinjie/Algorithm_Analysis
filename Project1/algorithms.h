@@ -58,6 +58,14 @@ void bubbleSort(FILE *file, char list[])
 
 /**
 Insertion Sort
+
+Insertion Sort iteratively builds a sorted portion of the list by 
+picking elements from the unsorted portion and inserting them into 
+their correct position. It starts with the second element and compares 
+it with the elements before it, shifting elements as necessary. This process 
+is repeated for each subsequent element until the entire list is sorted.
+
+Falta: el pdf se corta, solo eso
  */
 void insertionSort(FILE* file, char list[]) {
     createTable(file, "Insertion Sort", list); 
@@ -71,6 +79,7 @@ void insertionSort(FILE* file, char list[]) {
         int insertionIndex = i; 
 
         while (j >= 0 && list[j] > key) {
+            //Print lista con la comparación inicial
             fprintf(file, "{\\bf %d} ", row++);
             for (int k = 0; k < size; k++) {
                 if (k == j || k == i) {
@@ -80,9 +89,12 @@ void insertionSort(FILE* file, char list[]) {
                 }
             }
             fprintf(file, "\\\\\n");
+
             list[j + 1] = list[j];
             insertionIndex = j;
             j--;
+
+            //Print luego del swap
             fprintf(file, "{\\bf %d} ", row++);
             for (int k = 0; k < size; k++) {
                 if (k == j || k == i) {
@@ -96,6 +108,7 @@ void insertionSort(FILE* file, char list[]) {
         
         list[insertionIndex] = key;
 
+        //Print final de elemento i
         fprintf(file, "{\\bf %d} ", row++);
         for (int k = 0; k < size; k++) {
             if (k == insertionIndex || k == i) { //imprime el 
@@ -117,7 +130,13 @@ void insertionSort(FILE* file, char list[]) {
 
 
 /**
-Go to fix
+Exchange Sort:
+Exchange Sort repeatedly compares and swaps adjacent elements if they are 
+out of order. This process is repeated until the entire list is sorted. The 
+algorithm continues to iterate through the list, exchanging elements as needed to 
+ensure that each element is in its correct position.
+
+Flata: se corta el pdf
  */
 void exchangeSort(FILE* file, char list[]) {
     createTable(file, "Exchange Sort", list); 
@@ -126,15 +145,31 @@ void exchangeSort(FILE* file, char list[]) {
     for (int i = 0; i < size; i++) {
         for (int j = i + 1; j < size; j++) {
             if (list[i] > list[j]) {
+
+
                 char temp = list[i];
                 list[i] = list[j];
                 list[j] = temp;
+
+                fprintf(file, "{\\bf %d} ", row++);
+                for (int k = 0; k < size; k++)
+                {
+                    if (k == j || k == i)
+                    {
+                        fprintf(file, "& \\X{%c} ", list[k]);
+                    }
+                    else
+                    {
+                        fprintf(file, "& \\C{%c} ", list[k]);
+                    }
+                }
+                fprintf(file, "\\\\\n");
             }
 
             fprintf(file, "{\\bf %d} ", row++);
             for (int k = 0; k < size; k++)
             {
-                if (k == j || k == j)
+                if (k == j || k == i)
                 {
                     fprintf(file, "& \\X{%c} ", list[k]);
                 }

@@ -37,8 +37,8 @@ int main() {
     file = fopen("AA_PR01.tex", "a");
     // here goes execution table
     //bubbleSort(file, textInput);
-    insertionSort(file, textInput);
-    //exchangeSort(file, textInput);
+    //insertionSort(file, textInput);
+    exchangeSort(file, textInput);
     //mergeSort(file, textInput, 0, 15, &row);
     row = 0;
     //quickSort(file, textInput, 0 , 15, &row);
