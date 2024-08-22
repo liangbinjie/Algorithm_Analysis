@@ -39,13 +39,13 @@ int main() {
     //bubbleSort(file, textInput); //DONE
     //insertionSort(file, textInput); //DONE
     //exchangeSort(file, textInput); //DONE
-    //mergeSort(file, textInput, 0, 15, &row);
+    mergeSort(file, textInput, 0, 15, &row);
     row = 0;
     //quickSort(file, textInput, 0 , 15, &row);
     row = 0;
     //shellSort(file, textInput, size); //DONE
     //gnomeSort(file, textInput); //DONE
-    cocktailSort(file, textInput);
+    //cocktailSort(file, textInput);
     //stoogeSort(file, textInput, 0, size - 1, &row);
 
     fprintf(file, "\\end{document}");

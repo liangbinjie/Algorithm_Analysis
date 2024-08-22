@@ -10,8 +10,10 @@ int checkStooge = 0;
 int insertionExpand = 0;
 
 /**
- * Bubble Sort
- *
+ * Bubble Sort:
+  
+  A simple comparison-based sorting algorithm that repeatedly steps through the list, compares adjacent elements, and swaps them if they are in the wrong order. The process is repeated until the list is sorted. As larger elements "bubble" to the top (end of the list), the algorithm gets its name. Despite its simplicity, Bubble Sort is inefficient for large datasets.
+ 
  */
 void bubbleSort(FILE *file, char list[])
 {
@@ -200,19 +202,30 @@ void merge(FILE* file, char list[], int left, int middle, int right, int *row) {
     int n1 = middle - left + 1;
     int n2 = right - middle;
 
-    char L[n1], R[n2];
+    int L[n1], R[n2];
 
-    for (i = 0; i < n1; i++)
+    for (i = 0; i < n1; i++) {
+
         L[i] = list[left + i];
-    for (j = 0; j < n2; j++)
+
+        
+
+    }
+        
+    for (j = 0; j < n2; j++){
         R[j] = list[middle + 1 + j];
+    }
 
     i = 0;
     j = 0;
     k = left;
+    
+    while (i < n1 && j < n2) {
         if (L[i] <= R[j]) {
             list[k] = L[i];
             i++;
+            
+
         } else {
             list[k] = R[j];
             j++;
@@ -220,8 +233,8 @@ void merge(FILE* file, char list[], int left, int middle, int right, int *row) {
         k++;
 
         fprintf(file, "{\\bf %d} ", (*row)++);
-        for (int t = 0; t < right + 1; t++) {
-            if (t >= left && t <= right) {
+        for (int t = 0; t < size; t++) {
+            if (t == k - 1 || t == left || t == right || t == middle) {
                 fprintf(file, "& \\X{%c} ", list[t]);
             } else {
                 fprintf(file, "& \\C{%c} ", list[t]);
@@ -233,18 +246,47 @@ void merge(FILE* file, char list[], int left, int middle, int right, int *row) {
             closeTable(file, "Merge Sort");
             createTable(file, "Merge Sort (Continued)", list);
         }
+    }
+
+        
     
 
     while (i < n1) {
         list[k] = L[i];
         i++;
         k++;
+        fprintf(file, "{\\bf %d} ", (*row)++);
+        for (int t = 0; t < size; t++) {
+            if (t == k || t == i) {
+                fprintf(file, "& \\X{%c} ", list[t]);
+            } else {
+                fprintf(file, "& \\C{%c} ", list[t]);
+            }
+        }
+        fprintf(file, "\\\\\n");
+        if (*row == 60) {
+            closeTable(file, "Merge Sort");
+            createTable(file, "Merge Sort (Continued)", list);
+        }
     }
 
     while (j < n2) {
         list[k] = R[j];
         j++;
         k++;
+        fprintf(file, "{\\bf %d} ", (*row)++);
+        for (int t = 0; t < size; t++) {
+            if (t == k || t == j) {
+                fprintf(file, "& \\X{%c} ", list[t]);
+            } else {
+                fprintf(file, "& \\C{%c} ", list[t]);
+            }
+        }
+        fprintf(file, "\\\\\n");
+        if (*row == 60) {
+            closeTable(file, "Merge Sort");
+            createTable(file, "Merge Sort (Continued)", list);
+        }
     }
 }
 
@@ -257,6 +299,7 @@ void mergeSort(FILE* file, char list[], int left, int right, int *row) {
     if (left < right) {
         int middle = left + (right - left) / 2;
 
+        
         mergeSort(file, list, left, middle, row);  
         mergeSort(file, list, middle + 1, right, row);
 
@@ -342,8 +385,6 @@ progressively until it becomes 1. Elements are sorted within each gap interval,
 and the algorithm performs multiple passes to sort the entire list. This reduces 
 the number of comparisons and swaps, making Shell Sort more efficient than simple 
 insertion sort for larger lists.
-
-Casi perfecto
  */
 void shellSort(FILE* file, char list[], int size) {
     int row = 0;
