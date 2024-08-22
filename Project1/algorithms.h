@@ -57,9 +57,9 @@ void bubbleSort(FILE *file, char list[])
 }
 
 /**
-Insertion Sort
+Insertion Sort:
 
-Insertion Sort iteratively builds a sorted portion of the list by 
+Iteratively builds a sorted portion of the list by 
 picking elements from the unsorted portion and inserting them into 
 their correct position. It starts with the second element and compares 
 it with the elements before it, shifting elements as necessary. This process 
@@ -131,7 +131,8 @@ void insertionSort(FILE* file, char list[]) {
 
 /**
 Exchange Sort:
-Exchange Sort repeatedly compares and swaps adjacent elements if they are 
+
+Repeatedly compares and swaps adjacent elements if they are 
 out of order. This process is repeated until the entire list is sorted. The 
 algorithm continues to iterate through the list, exchanging elements as needed to 
 ensure that each element is in its correct position.
@@ -190,7 +191,7 @@ void exchangeSort(FILE* file, char list[]) {
 }
 
 /**
-Merge Sort
+Merge Sort:
 Fix: it doesnt print well first steps
  */
 
@@ -269,7 +270,7 @@ void mergeSort(FILE* file, char list[], int left, int right, int *row) {
 
 
 /**
-Quick Sort
+Quick Sort:
  */
 
  void swap(char* a, char* b) {
@@ -333,8 +334,9 @@ void quickSort(FILE* file, char list[], int low, int high, int *row) {
 }
 
 /**
-Shell Sort
-Shell Sort improves on insertion sort by comparing elements separated by 
+Shell Sort:
+
+Improves on insertion sort by comparing elements separated by 
 a gap rather than adjacent elements. Initially, the gap is large and is reduced 
 progressively until it becomes 1. Elements are sorted within each gap interval, 
 and the algorithm performs multiple passes to sort the entire list. This reduces 
@@ -392,7 +394,14 @@ void shellSort(FILE* file, char list[], int size) {
 }
 
 /**
-Gnome Sort
+Gnome Sort:
+
+A simple comparison-based sorting algorithm 
+similar to insertion sort but using a different approach. It 
+iterates through the list by comparing adjacent elements and 
+swaps them if they are out of order. When a swap is made, the algorithm 
+moves back to the previous element (like a gnome moving backward in a line of 
+unsorted flowers). This process continues until the array is sorted.
  */
  void gnomeSort(FILE* file, char list[]) {
     
@@ -449,7 +458,14 @@ Gnome Sort
 }
 
 /*
-Cocktail Sort
+Cocktail Sort:
+
+An extension of the Bubble Sort algorithm that works by traversing the array in 
+both directions alternately. It repeatedly passes through the array, first from 
+left to right, moving the largest element to the end, and then from right to left, 
+moving the smallest element to the beginning. This bidirectional movement allows 
+Cocktail Sort to handle certain types of partially sorted data more efficiently 
+than Bubble Sort.
 */
 void cocktailSort(FILE* file, char list[]) {
 
@@ -463,11 +479,34 @@ void cocktailSort(FILE* file, char list[]) {
         swapped = false;
 
         for (int i = start; i < end; i++) {
+            
             if (list[i] > list[i + 1]) {
+
+                fprintf(file, "{\\bf %d} ", row);
+                for (int k = 0; k < size; k++) {
+                    if (k == i || k == i + 1) {
+                        fprintf(file, "& \\X{%c} ", list[k]);
+                    } else {
+                       fprintf(file, "& \\C{%c} ", list[k]);
+                    }
+                }
+                fprintf(file, "\\\\\n");
+
+
                 char temp = list[i];
                 list[i] = list[i + 1];
                 list[i + 1] = temp;
                 swapped = true;
+
+                fprintf(file, "{\\bf %d} ", row);
+                for (int k = 0; k < size; k++) {
+                    if (k == i || k == i + 1) {
+                        fprintf(file, "& \\X{%c} ", list[k]);
+                    } else {
+                       fprintf(file, "& \\C{%c} ", list[k]);
+                    }
+                }
+                fprintf(file, "\\\\\n");
             }
 
             fprintf(file, "{\\bf %d} ", row++);
@@ -480,10 +519,7 @@ void cocktailSort(FILE* file, char list[]) {
             }
             fprintf(file, "\\\\\n");
 
-            if (row == 60) {
-                closeTable(file, "Cocktail Sort");
-                createTable(file, "Cocktail Sort (Continued)", list);
-            }
+            
         }
 
         if (!swapped) break;
@@ -494,10 +530,31 @@ void cocktailSort(FILE* file, char list[]) {
 
         for (int i = end - 1; i >= start; i--) {
             if (list[i] > list[i + 1]) {
+
+                fprintf(file, "{\\bf %d} ", row);
+                for (int k = 0; k < size; k++) {
+                    if (k == i || k == i + 1) {
+                        fprintf(file, "& \\X{%c} ", list[k]);
+                    } else {
+                       fprintf(file, "& \\C{%c} ", list[k]);
+                    }
+                }
+                fprintf(file, "\\\\\n");
+
                 char temp = list[i];
                 list[i] = list[i + 1];
                 list[i + 1] = temp;
                 swapped = true;
+
+                fprintf(file, "{\\bf %d} ", row);
+                for (int k = 0; k < size; k++) {
+                    if (k == i || k == i + 1) {
+                        fprintf(file, "& \\X{%c} ", list[k]);
+                    } else {
+                       fprintf(file, "& \\C{%c} ", list[k]);
+                    }
+                }
+                fprintf(file, "\\\\\n");
             }
 
             fprintf(file, "{\\bf %d} ", row++);
@@ -509,11 +566,6 @@ void cocktailSort(FILE* file, char list[]) {
                 }
             }
             fprintf(file, "\\\\\n");
-
-            if (row == 120) {
-                closeTable(file, "Cocktail Sort (Continued)");
-                createTable(file, "Cocktail Sort (Continued) 2", list);
-            }
         }
 
         start++;
