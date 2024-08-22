@@ -36,14 +36,14 @@ int main() {
     // Open the file in append mode and write the table
     file = fopen("AA_PR01.tex", "a");
     // here goes execution table
-    //bubbleSort(file, textInput);
-    insertionSort(file, textInput);
-    //exchangeSort(file, textInput);
+    //bubbleSort(file, textInput); //DONE
+    //insertionSort(file, textInput); //DONE
+    //exchangeSort(file, textInput); //DONE
     //mergeSort(file, textInput, 0, 15, &row);
     row = 0;
     //quickSort(file, textInput, 0 , 15, &row);
     row = 0;
-    //shellSort(file, textInput, size);
+    shellSort(file, textInput, size);
     //gnomeSort(file, textInput);
     //cocktailSort(file, textInput);
     //stoogeSort(file, textInput, 0, size - 1, &row);
