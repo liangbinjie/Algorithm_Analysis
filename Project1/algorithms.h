@@ -334,18 +334,39 @@ void quickSort(FILE* file, char list[], int low, int high, int *row) {
 
 /**
 Shell Sort
+Shell Sort improves on insertion sort by comparing elements separated by 
+a gap rather than adjacent elements. Initially, the gap is large and is reduced 
+progressively until it becomes 1. Elements are sorted within each gap interval, 
+and the algorithm performs multiple passes to sort the entire list. This reduces 
+the number of comparisons and swaps, making Shell Sort more efficient than simple 
+insertion sort for larger lists.
+
 Casi perfecto
  */
 void shellSort(FILE* file, char list[], int size) {
     int row = 0;
     createTable(file, "Shell Sort", list); 
+
     for (int gap = size / 2; gap > 0; gap /= 2) {
+
         for (int i = gap; i < size; i++) {
+
             char temp = list[i];
             int j;
 
             for (j = i; j >= gap && list[j - gap] > temp; j -= gap) {
+
                 list[j] = list[j - gap];
+
+                fprintf(file, "{\\bf %d} ", row++);
+                for (int k = 0; k < size; k++) {
+                    if (k == j || k == i) {
+                        fprintf(file, "& \\X{%c} ", list[k]);
+                    } else {
+                        fprintf(file, "& \\C{%c} ", list[k]);
+                    }
+                }
+                fprintf(file, "\\\\\n");
             }
 
             list[j] = temp;
@@ -360,7 +381,6 @@ void shellSort(FILE* file, char list[], int size) {
             }
             fprintf(file, "\\\\\n");
 
-            // Handle multiple tables (if necessary, after 60 rows)
             if (row == 60) {
                 closeTable(file, "Shell Sort");
                 createTable(file, "Shell Sort (Continued)", list);
