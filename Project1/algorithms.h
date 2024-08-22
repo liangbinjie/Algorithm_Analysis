@@ -2,6 +2,8 @@
 #include <stdbool.h>
 #include "latex.h"
 
+// RQPONMLKJIHGFEDCBA
+
 int checkMerge = 0;
 int checkBubble = 0;
 int checkQuick = 0;
@@ -42,11 +44,11 @@ void bubbleSort(FILE *file, char list[])
                 }
             }
             fprintf(file, "\\\\\n");
-            if (row == 60)
+            if (row % 62 == 0)
             {
                 checkBubble++;
                 closeTable(file, "Bubble Sort");
-                createTable(file, "Bubble Sort 2", list);
+                createTable(file, "Bubble Sort", list);
             }
         }
     }
@@ -54,7 +56,7 @@ void bubbleSort(FILE *file, char list[])
         closeTable(file, "Bubble Sort");
     }
     else {
-        closeTable(file, "Bubble Sort 2");
+        closeTable(file, "Bubble Sort");
     }
 }
 
@@ -82,6 +84,10 @@ void insertionSort(FILE* file, char list[]) {
 
         while (j >= 0 && list[j] > key) {
             //Print lista con la comparación inicial
+            if (row % 30 == 0 && row != 0) {
+                closeTable(file, "Insertion Sort");
+                createTable(file, "Insertion Sort", list);
+            }
             fprintf(file, "{\\bf %d} ", row);
             for (int k = 0; k < size; k++) {
                 if (k == j || k == i) {
@@ -120,14 +126,9 @@ void insertionSort(FILE* file, char list[]) {
             }
         }
         fprintf(file, "\\\\\n");
-
-        if (row == 60) {
-            closeTable(file, "Insertion Sort");
-            createTable(file, "Insertion Sort 2", list);
-        }
     }
 
-    closeTable(file, "Insertion Sort 2");
+    closeTable(file, "Insertion Sort");
 }
 
 
@@ -182,14 +183,14 @@ void exchangeSort(FILE* file, char list[]) {
                 }
             }
             fprintf(file, "\\\\\n");
-            if (row == 60)
+            if (row % 50 == 0 && row != 0)
             {
                 closeTable(file, "Exchange Sort");
-                createTable(file, "Exchange Sort 2", list);
+                createTable(file, "Exchange Sort", list);
             }
         }
     }
-    closeTable(file, "Exchange Sort 2");
+    closeTable(file, "Exchange Sort");
 }
 
 /**
@@ -423,15 +424,15 @@ void shellSort(FILE* file, char list[], int size) {
                 }
             }
             fprintf(file, "\\\\\n");
-
-            if (row == 60) {
+            if (row == 24) {
                 closeTable(file, "Shell Sort");
-                createTable(file, "Shell Sort (Continued)", list);
+                createTable(file, "Shell Sort", list);
             }
+
         }
     }
 
-    closeTable(file, "Shell Sort (Continued)");
+    closeTable(file, "Shell Sort");
 }
 
 /**
@@ -488,14 +489,14 @@ unsorted flowers). This process continues until the array is sorted.
 
             index--;
 
-            if (row == 60) {
-                closeTable(file, "Gnome Sort");
-                createTable(file, "Gnome Sort (Continued)", list);
-            }
         }
+            if (row % 50 == 0 && row != 0) {
+                closeTable(file, "Gnome Sort");
+                createTable(file, "Gnome Sort", list);
+            }
     }
 
-    closeTable(file, "Gnome Sort (Continued)");
+    closeTable(file, "Gnome Sort");
 }
 
 /*
@@ -522,7 +523,6 @@ void cocktailSort(FILE* file, char list[]) {
         for (int i = start; i < end; i++) {
             
             if (list[i] > list[i + 1]) {
-
                 fprintf(file, "{\\bf %d} ", row);
                 for (int k = 0; k < size; k++) {
                     if (k == i || k == i + 1) {
@@ -550,6 +550,10 @@ void cocktailSort(FILE* file, char list[]) {
                 fprintf(file, "\\\\\n");
             }
 
+            if (row % 20 == 0 && row != 0) {
+                closeTable(file, "Cocktail Sort");
+                createTable(file, "Cocktail Sort", list);
+            }
             fprintf(file, "{\\bf %d} ", row++);
             for (int k = 0; k < size; k++) {
                 if (k == i || k == i + 1) {
@@ -598,6 +602,10 @@ void cocktailSort(FILE* file, char list[]) {
                 fprintf(file, "\\\\\n");
             }
 
+            if (row % 20 == 0 && row != 0) {
+                closeTable(file, "Cocktail Sort");
+                createTable(file, "Cocktail Sort", list);
+            }
             fprintf(file, "{\\bf %d} ", row++);
             for (int k = 0; k < size; k++) {
                 if (k == i || k == i + 1) {
