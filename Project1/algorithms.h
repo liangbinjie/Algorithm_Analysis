@@ -2,6 +2,8 @@
 #include <stdbool.h>
 #include "latex.h"
 
+// RQPONMLKJIHGFEDCBA
+
 int checkMerge = 0;
 int checkBubble = 0;
 int checkQuick = 0;
@@ -40,11 +42,11 @@ void bubbleSort(FILE *file, char list[])
                 }
             }
             fprintf(file, "\\\\\n");
-            if (row == 60)
+            if (row % 62 == 0)
             {
                 checkBubble++;
                 closeTable(file, "Bubble Sort");
-                createTable(file, "Bubble Sort 2", list);
+                createTable(file, "Bubble Sort", list);
             }
         }
     }
@@ -52,7 +54,7 @@ void bubbleSort(FILE *file, char list[])
         closeTable(file, "Bubble Sort");
     }
     else {
-        closeTable(file, "Bubble Sort 2");
+        closeTable(file, "Bubble Sort");
     }
 }
 
@@ -80,6 +82,10 @@ void insertionSort(FILE* file, char list[]) {
 
         while (j >= 0 && list[j] > key) {
             //Print lista con la comparación inicial
+            if (row % 30 == 0 && row != 0) {
+                closeTable(file, "Insertion Sort");
+                createTable(file, "Insertion Sort", list);
+            }
             fprintf(file, "{\\bf %d} ", row);
             for (int k = 0; k < size; k++) {
                 if (k == j || k == i) {
@@ -118,14 +124,9 @@ void insertionSort(FILE* file, char list[]) {
             }
         }
         fprintf(file, "\\\\\n");
-
-        if (row == 60) {
-            closeTable(file, "Insertion Sort");
-            createTable(file, "Insertion Sort 2", list);
-        }
     }
 
-    closeTable(file, "Insertion Sort 2");
+    closeTable(file, "Insertion Sort");
 }
 
 

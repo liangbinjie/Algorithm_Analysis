@@ -14,6 +14,7 @@ int checkString(char textInput[]) {
 
 int main() {
     char textInput[size+1];                                     // character array to store the input
+    char originalInput[size+1];                                     // character array to store the input
     int validInput = 0;                                         // boolean to check if the input is valid
 
     while (validInput == 0) {                                   // while loop to keep asking for input until it is valid
@@ -36,14 +37,16 @@ int main() {
     // Open the file in append mode and write the table
     file = fopen("AA_PR01.tex", "a");
     // here goes execution table
-    //bubbleSort(file, textInput); //DONE
-    //insertionSort(file, textInput); //DONE
+    strncpy(originalInput, textInput, size);
+    bubbleSort(file, textInput); //DONE
+    strncpy(textInput, originalInput, size);
+    insertionSort(file, textInput); //DONE
     //exchangeSort(file, textInput); //DONE
     //mergeSort(file, textInput, 0, 15, &row);
     row = 0;
     //quickSort(file, textInput, 0 , 15, &row);
     row = 0;
-    shellSort(file, textInput, size);
+    // shellSort(file, textInput, size);
     //gnomeSort(file, textInput);
     //cocktailSort(file, textInput);
     //stoogeSort(file, textInput, 0, size - 1, &row);
