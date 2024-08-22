@@ -402,20 +402,38 @@ Gnome Sort
 
     while (index < size) {
         if (index == 0 || list[index] >= list[index - 1]) {
+            fprintf(file, "{\\bf %d} ", row++);
+            for (int k = 0; k < size; k++) {
+                if (k == index || k == index - 1) {
+                fprintf(file, "& \\X{%c} ", list[k]);
+                } else {
+                    fprintf(file, "& \\C{%c} ", list[k]);
+                }
+            }   
+            fprintf(file, "\\\\\n");
             index++;
         } else {
-            char temp = list[index];
-            list[index] = list[index - 1];
-            list[index - 1] = temp;
-
             fprintf(file, "{\\bf %d} ", row);
             for (int k = 0; k < size; k++) {
                 if (k == index || k == index - 1) {
                 fprintf(file, "& \\X{%c} ", list[k]);
-            } else {
-                fprintf(file, "& \\C{%c} ", list[k]);
-            }
-        }
+                } else {
+                    fprintf(file, "& \\C{%c} ", list[k]);
+                }
+            }   
+            fprintf(file, "\\\\\n");
+            char temp = list[index];
+            list[index] = list[index - 1];
+            list[index - 1] = temp;
+
+            fprintf(file, "{\\bf %d} ", row++);
+            for (int k = 0; k < size; k++) {
+                if (k == index || k == index - 1) {
+                fprintf(file, "& \\X{%c} ", list[k]);
+                } else {
+                    fprintf(file, "& \\C{%c} ", list[k]);
+                }
+            }   
             fprintf(file, "\\\\\n");
 
             index--;
