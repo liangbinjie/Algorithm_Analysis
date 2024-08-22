@@ -80,7 +80,7 @@ void insertionSort(FILE* file, char list[]) {
 
         while (j >= 0 && list[j] > key) {
             //Print lista con la comparación inicial
-            fprintf(file, "{\\bf %d} ", row++);
+            fprintf(file, "{\\bf %d} ", row);
             for (int k = 0; k < size; k++) {
                 if (k == j || k == i) {
                     fprintf(file, "& \\X{%c} ", list[k]);  
@@ -109,7 +109,7 @@ void insertionSort(FILE* file, char list[]) {
         list[insertionIndex] = key;
 
         //Print final de elemento i
-        fprintf(file, "{\\bf %d} ", row++);
+        fprintf(file, "{\\bf %d} ", row);
         for (int k = 0; k < size; k++) {
             if (k == insertionIndex || k == i) { //imprime el 
                 fprintf(file, "& \\X{%c} ", list[k]);  
@@ -358,7 +358,7 @@ void shellSort(FILE* file, char list[], int size) {
 
                 list[j] = list[j - gap];
 
-                fprintf(file, "{\\bf %d} ", row++);
+                fprintf(file, "{\\bf %d} ", row);
                 for (int k = 0; k < size; k++) {
                     if (k == j || k == i) {
                         fprintf(file, "& \\X{%c} ", list[k]);
