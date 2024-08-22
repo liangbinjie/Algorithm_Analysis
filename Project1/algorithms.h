@@ -7,6 +7,8 @@ int checkBubble = 0;
 int checkQuick = 0;
 int checkStooge = 0;
 
+int insertionExpand = 0;
+
 /**
  * Bubble Sort
  *
@@ -55,32 +57,67 @@ void bubbleSort(FILE *file, char list[])
 }
 
 /**
+Insertion Sort
 
+Insertion Sort iteratively builds a sorted portion of the list by 
+picking elements from the unsorted portion and inserting them into 
+their correct position. It starts with the second element and compares 
+it with the elements before it, shifting elements as necessary. This process 
+is repeated for each subsequent element until the entire list is sorted.
+
+Falta: el pdf se corta, solo eso
  */
 void insertionSort(FILE* file, char list[]) {
     createTable(file, "Insertion Sort", list); 
-    int row = 0; 
+    int row = 0;
+    int kCounter = 0;
 
     for (int i = 1; i < size; i++) {
         char key = list[i];
         int j = i - 1;
 
+        int insertionIndex = i; 
+
         while (j >= 0 && list[j] > key) {
+            //Print lista con la comparación inicial
+            fprintf(file, "{\\bf %d} ", row);
+            for (int k = 0; k < size; k++) {
+                if (k == j || k == i) {
+                    fprintf(file, "& \\X{%c} ", list[k]);  
+                } else {
+                    fprintf(file, "& \\C{%c} ", list[k]);
+                }
+            }
+            fprintf(file, "\\\\\n");
+
             list[j + 1] = list[j];
-            j = j - 1;
+            insertionIndex = j;
+            j--;
+
+            //Print luego del swap
+            fprintf(file, "{\\bf %d} ", row++);
+            for (int k = 0; k < size; k++) {
+                if (k == j || k == i) {
+                    fprintf(file, "& \\X{%c} ", list[k]);  
+                } else {
+                    fprintf(file, "& \\C{%c} ", list[k]);
+                }
+            }
+            fprintf(file, "\\\\\n");
         }
         
-        list[j + 1] = key;
+        list[insertionIndex] = key;
 
-        fprintf(file, "{\\bf %d} ", row++); 
+        //Print final de elemento i
+        fprintf(file, "{\\bf %d} ", row);
         for (int k = 0; k < size; k++) {
-            if (k == j + 1) {
-                fprintf(file, "& \\X{%c} ", list[k]);
+            if (k == insertionIndex || k == i) { //imprime el 
+                fprintf(file, "& \\X{%c} ", list[k]);  
             } else {
-                fprintf(file, "& \\C{%c} ", list[k]);
+                fprintf(file, "& \\C{%c} ", list[k]); 
             }
         }
-        fprintf(file, "\\\\\n"); 
+        fprintf(file, "\\\\\n");
 
         if (row == 60) {
             closeTable(file, "Insertion Sort");
@@ -91,8 +128,15 @@ void insertionSort(FILE* file, char list[]) {
     closeTable(file, "Insertion Sort 2");
 }
 
+
 /**
-Go to fix
+Exchange Sort:
+Exchange Sort repeatedly compares and swaps adjacent elements if they are 
+out of order. This process is repeated until the entire list is sorted. The 
+algorithm continues to iterate through the list, exchanging elements as needed to 
+ensure that each element is in its correct position.
+
+Flata: se corta el pdf
  */
 void exchangeSort(FILE* file, char list[]) {
     createTable(file, "Exchange Sort", list); 
@@ -101,15 +145,31 @@ void exchangeSort(FILE* file, char list[]) {
     for (int i = 0; i < size; i++) {
         for (int j = i + 1; j < size; j++) {
             if (list[i] > list[j]) {
+
+
                 char temp = list[i];
                 list[i] = list[j];
                 list[j] = temp;
+
+                fprintf(file, "{\\bf %d} ", row++);
+                for (int k = 0; k < size; k++)
+                {
+                    if (k == j || k == i)
+                    {
+                        fprintf(file, "& \\X{%c} ", list[k]);
+                    }
+                    else
+                    {
+                        fprintf(file, "& \\C{%c} ", list[k]);
+                    }
+                }
+                fprintf(file, "\\\\\n");
             }
 
             fprintf(file, "{\\bf %d} ", row++);
             for (int k = 0; k < size; k++)
             {
-                if (k == j || k == j)
+                if (k == j || k == i)
                 {
                     fprintf(file, "& \\X{%c} ", list[k]);
                 }
@@ -274,18 +334,39 @@ void quickSort(FILE* file, char list[], int low, int high, int *row) {
 
 /**
 Shell Sort
+Shell Sort improves on insertion sort by comparing elements separated by 
+a gap rather than adjacent elements. Initially, the gap is large and is reduced 
+progressively until it becomes 1. Elements are sorted within each gap interval, 
+and the algorithm performs multiple passes to sort the entire list. This reduces 
+the number of comparisons and swaps, making Shell Sort more efficient than simple 
+insertion sort for larger lists.
+
 Casi perfecto
  */
 void shellSort(FILE* file, char list[], int size) {
     int row = 0;
     createTable(file, "Shell Sort", list); 
+
     for (int gap = size / 2; gap > 0; gap /= 2) {
+
         for (int i = gap; i < size; i++) {
+
             char temp = list[i];
             int j;
 
             for (j = i; j >= gap && list[j - gap] > temp; j -= gap) {
+
                 list[j] = list[j - gap];
+
+                fprintf(file, "{\\bf %d} ", row);
+                for (int k = 0; k < size; k++) {
+                    if (k == j || k == i) {
+                        fprintf(file, "& \\X{%c} ", list[k]);
+                    } else {
+                        fprintf(file, "& \\C{%c} ", list[k]);
+                    }
+                }
+                fprintf(file, "\\\\\n");
             }
 
             list[j] = temp;
@@ -300,7 +381,6 @@ void shellSort(FILE* file, char list[], int size) {
             }
             fprintf(file, "\\\\\n");
 
-            // Handle multiple tables (if necessary, after 60 rows)
             if (row == 60) {
                 closeTable(file, "Shell Sort");
                 createTable(file, "Shell Sort (Continued)", list);
