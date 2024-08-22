@@ -181,14 +181,14 @@ void exchangeSort(FILE* file, char list[]) {
                 }
             }
             fprintf(file, "\\\\\n");
-            if (row == 60)
+            if (row % 50 == 0 && row != 0)
             {
                 closeTable(file, "Exchange Sort");
-                createTable(file, "Exchange Sort 2", list);
+                createTable(file, "Exchange Sort", list);
             }
         }
     }
-    closeTable(file, "Exchange Sort 2");
+    closeTable(file, "Exchange Sort");
 }
 
 /**
@@ -383,15 +383,15 @@ void shellSort(FILE* file, char list[], int size) {
                 }
             }
             fprintf(file, "\\\\\n");
-
-            if (row == 60) {
+            if (row == 24) {
                 closeTable(file, "Shell Sort");
-                createTable(file, "Shell Sort (Continued)", list);
+                createTable(file, "Shell Sort", list);
             }
+
         }
     }
 
-    closeTable(file, "Shell Sort (Continued)");
+    closeTable(file, "Shell Sort");
 }
 
 /**
@@ -448,14 +448,14 @@ unsorted flowers). This process continues until the array is sorted.
 
             index--;
 
-            if (row == 60) {
-                closeTable(file, "Gnome Sort");
-                createTable(file, "Gnome Sort (Continued)", list);
-            }
         }
+            if (row % 50 == 0 && row != 0) {
+                closeTable(file, "Gnome Sort");
+                createTable(file, "Gnome Sort", list);
+            }
     }
 
-    closeTable(file, "Gnome Sort (Continued)");
+    closeTable(file, "Gnome Sort");
 }
 
 /*
@@ -482,7 +482,6 @@ void cocktailSort(FILE* file, char list[]) {
         for (int i = start; i < end; i++) {
             
             if (list[i] > list[i + 1]) {
-
                 fprintf(file, "{\\bf %d} ", row);
                 for (int k = 0; k < size; k++) {
                     if (k == i || k == i + 1) {
@@ -510,6 +509,10 @@ void cocktailSort(FILE* file, char list[]) {
                 fprintf(file, "\\\\\n");
             }
 
+            if (row % 20 == 0 && row != 0) {
+                closeTable(file, "Cocktail Sort");
+                createTable(file, "Cocktail Sort", list);
+            }
             fprintf(file, "{\\bf %d} ", row++);
             for (int k = 0; k < size; k++) {
                 if (k == i || k == i + 1) {
@@ -558,6 +561,10 @@ void cocktailSort(FILE* file, char list[]) {
                 fprintf(file, "\\\\\n");
             }
 
+            if (row % 20 == 0 && row != 0) {
+                closeTable(file, "Cocktail Sort");
+                createTable(file, "Cocktail Sort", list);
+            }
             fprintf(file, "{\\bf %d} ", row++);
             for (int k = 0; k < size; k++) {
                 if (k == i || k == i + 1) {

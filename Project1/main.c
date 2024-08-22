@@ -41,14 +41,18 @@ int main() {
     bubbleSort(file, textInput); //DONE
     strncpy(textInput, originalInput, size);
     insertionSort(file, textInput); //DONE
-    //exchangeSort(file, textInput); //DONE
+    strncpy(textInput, originalInput, size);
+    exchangeSort(file, textInput); //DONE
     //mergeSort(file, textInput, 0, 15, &row);
     row = 0;
     //quickSort(file, textInput, 0 , 15, &row);
     row = 0;
-    //shellSort(file, textInput, size); //DONE
-    //gnomeSort(file, textInput); //DONE
-    cocktailSort(file, textInput);
+    strncpy(textInput, originalInput, size);
+    shellSort(file, textInput, size); //DONE
+    strncpy(textInput, originalInput, size);
+    gnomeSort(file, textInput); //DONE
+    strncpy(textInput, originalInput, size);
+    cocktailSort(file, textInput); 
     //stoogeSort(file, textInput, 0, size - 1, &row);
 
     fprintf(file, "\\end{document}");
