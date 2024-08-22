@@ -46,9 +46,9 @@ int main() {
     row = 0;
     //quickSort(file, textInput, 0 , 15, &row);
     row = 0;
-    // shellSort(file, textInput, size);
-    //gnomeSort(file, textInput);
-    //cocktailSort(file, textInput);
+    //shellSort(file, textInput, size); //DONE
+    //gnomeSort(file, textInput); //DONE
+    cocktailSort(file, textInput);
     //stoogeSort(file, textInput, 0, size - 1, &row);
 
     fprintf(file, "\\end{document}");
