@@ -39,28 +39,39 @@ int main() {
     // here goes execution table
     strncpy(originalInput, textInput, size);
     bubbleSort(file, textInput); //DONE
+    
     strncpy(textInput, originalInput, size);
     insertionSort(file, textInput); //DONE
+
     strncpy(textInput, originalInput, size);
     exchangeSort(file, textInput); //DONE
-    //mergeSort(file, textInput, 0, 15, &row);
+
+    strncpy(textInput, originalInput, size);
+    mergeSort(file, textInput, 0, 15, &row);
+    
     row = 0;
-    //quickSort(file, textInput, 0 , 15, &row);
+    strncpy(textInput, originalInput, size);
+    quickSort(file, textInput, 0 , 15, &row);
+
     row = 0;
     strncpy(textInput, originalInput, size);
     shellSort(file, textInput, size); //DONE
+
     strncpy(textInput, originalInput, size);
     gnomeSort(file, textInput); //DONE
+
     strncpy(textInput, originalInput, size);
     cocktailSort(file, textInput); 
-    //stoogeSort(file, textInput, 0, size - 1, &row);
+
+    strncpy(textInput, originalInput, size);
+    stoogeSort(file, textInput, 0, size - 1, &row);
 
     fprintf(file, "\\end{document}");
     fclose(file);
 
     system("pdflatex AA_PR01.tex");                     // compile the latex file using pdflatex
 
-    // system("evince --presentation AA_PR01.pdf");
+    system("evince --presentation AA_PR01.pdf");
   
     return 0;
 }

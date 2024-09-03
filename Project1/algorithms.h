@@ -156,6 +156,11 @@ void exchangeSort(FILE* file, char list[]) {
                 list[j] = temp;
 
                 fprintf(file, "{\\bf %d} ", row++);
+                if (row % 50 == 0 && row != 0)
+                {
+                    closeTable(file, "Exchange Sort");
+                    createTable(file, "Exchange Sort", list);
+                }
                 for (int k = 0; k < size; k++)
                 {
                     if (k == j || k == i)
@@ -171,6 +176,11 @@ void exchangeSort(FILE* file, char list[]) {
             }
 
             fprintf(file, "{\\bf %d} ", row++);
+            if (row % 50 == 0 && row != 0)
+            {
+                closeTable(file, "Exchange Sort");
+                createTable(file, "Exchange Sort", list);
+            }
             for (int k = 0; k < size; k++)
             {
                 if (k == j || k == i)
@@ -183,11 +193,6 @@ void exchangeSort(FILE* file, char list[]) {
                 }
             }
             fprintf(file, "\\\\\n");
-            if (row % 50 == 0 && row != 0)
-            {
-                closeTable(file, "Exchange Sort");
-                createTable(file, "Exchange Sort", list);
-            }
         }
     }
     closeTable(file, "Exchange Sort");
@@ -348,7 +353,7 @@ int partition(FILE* file, char list[], int low, int high, int *row) {
     
     swap(&list[i + 1], &list[high]);
     fprintf(file, "{\\bf %d} ", (*row)++);
-    for (int t = 0; t <= high; t++) {
+    for (int t = 0; t < size; t++) {
         if (t == i + 1 || t == high) {
             fprintf(file, "& \\X{%c} ", list[t]);
         } else {
@@ -361,7 +366,7 @@ int partition(FILE* file, char list[], int low, int high, int *row) {
 
 void quickSort(FILE* file, char list[], int low, int high, int *row) {
     if (checkQuick < 1) {
-        createTable(file, "Merge Quick", list);  
+        createTable(file, "Quick Sort", list);  
         checkQuick++;
     }
     if (low < high) {
@@ -639,7 +644,7 @@ void stoogeSort(FILE* file, char list[], int start, int end, int* row) {
     }
 
     fprintf(file, "{\\bf %d} ", (*row)++);  // Número de la fila en negrita
-        for (int i = 0; i <= end; i++) {
+        for (int i = 0; i < size; i++) {
             if (i == start || i == end) {
                 // Mostrar en rojo los elementos intercambiados
                 fprintf(file, "& \\X{%c} ", list[i]);
@@ -651,7 +656,7 @@ void stoogeSort(FILE* file, char list[], int start, int end, int* row) {
         fprintf(file, "\\\\\n");
 
         // Si hemos alcanzado 60 filas, cerrar y abrir una nueva tabla
-        if (*row == 60) {
+        if (*row % 60 == 0) {
             closeTable(file, "Stooge Sort");
             createTable(file, "Stooge Sort (Continued)", list);
         
