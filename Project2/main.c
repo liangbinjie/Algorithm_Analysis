@@ -10,7 +10,16 @@ void processFile() {
 void createFile(char *filename) {
     FILE *file;
     file = fopen(filename, "w");
-    fprintf(file, "Hola mundo");
+    fprintf(file, "Hex | Symbol | Frecuency");
+    for (int i=0; i<256;i++) {
+        fprintf(file, "\n%3x |", i);
+        if (i < 32 || i > 125) {
+            fprintf(file, "        |");
+        } else {
+            fprintf(file, "   %c    |", i);
+        }
+
+    }
     fclose(file);
 }
 
@@ -22,11 +31,12 @@ void printContent(FILE *file) {
     fclose(file);
 }
 
+// ./main <file-frec> <file-1> <file-2> ... <file-n>
 int main(int argc, char* argv[]) {
-    // main <file-frec> <file-1> <file-2> ... <file-n>
     if (argc == 1) {
         // no se recibio ningun archivo
         printf("No se ingreso un archivo para ejecutar el programa");
+        return 0;
     }
 
     FILE *file;
@@ -35,11 +45,12 @@ int main(int argc, char* argv[]) {
     if (file == NULL) {
         // si no existe <file-frec>, lo crea
         fclose(file);
-        createFile(argv[1]);
     }
 
+    createFile(argv[1]);
+
     if (argc == 2) {
-        // se recibio solamente <file-frec>
+        // se recibe solamente <file-frec>
         // mostrar contenido
         file = fopen(argv[1], "r");
         printContent(file);
