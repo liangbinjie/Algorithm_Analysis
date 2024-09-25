@@ -3,7 +3,7 @@
 #include <stdio.h>
 
 
-void processFile() {
+void processFile(char *filename, int frecuencyArray[]) {
 
 }
 
@@ -57,9 +57,14 @@ int main(int argc, char* argv[]) {
         return 0;
     }
 
+    // array para tener el conteo de cada frecuencia
+    int frecuency[256] = {0};
+
     for (int i=2; i<argc; i++) {
         printf("%s\n", argv[i]);
+        processFile(argv[i], frecuency);
     } 
+
 
     return 0;
 }
