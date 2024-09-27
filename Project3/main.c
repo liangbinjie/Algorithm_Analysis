@@ -1,7 +1,18 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include "huffman.h"
 
+int test() {
+    char arr[] = { 'a', 'b', 'c', 'd', 'e', 'f' }; 
+    int freq[] = { 5, 9, 12, 13, 16, 45 }; 
+  
+    int size = sizeof(arr) / sizeof(arr[0]); 
+  
+    HuffmanCodes(arr, freq, size); 
+  
+    return 0; 
+}
 
 void processFile(char *filename, int frecuencyArray[]) {
     FILE *file;
@@ -86,6 +97,8 @@ int main(int argc, char* argv[]) {
         processFile(argv[i], frecuency);
         createFile(argv[1], frecuency);
     } 
+
+    test();
 
 
     return 0;

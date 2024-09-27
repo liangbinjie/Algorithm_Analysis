@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-
 void processFile(char *filename, int frecuencyArray[]) {
     FILE *file;
     file = fopen(filename, "rb");
@@ -86,6 +85,7 @@ int main(int argc, char* argv[]) {
         processFile(argv[i], frecuency);
         createFile(argv[1], frecuency);
     } 
+
 
 
     return 0;
