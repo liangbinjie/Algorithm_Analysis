@@ -3,25 +3,20 @@
 #include <stdio.h>
 
 // procesa un archivo <filename> y llena el array <frecuencyArray> con las frecuencias de cada byte
+// cierra el archivo despues de procesarlo
 void processFile(char *filename, int frecuencyArray[]) {
     FILE *file;
     file = fopen(filename, "rb");
     unsigned char byte;
     while (fread(&byte, 1, 1, file)) {
         frecuencyArray[byte]++;
-
-        // if (byte >= 32 && byte <= 126) {  
-        //     printf("Carácter: '%c' | En ASCII: %d (0x%x)\n", byte, byte, byte);
-        // } else {
-        //     printf("No es imprimible | En ASCII: %d (0x%x)\n", byte, byte);
-        // }
     }
 
     fclose(file);
 
 }
 
-// suma todas las frecuencias
+// retorna la suma de todas las frecuencias
 int frecuencyTotal(int frecuencyArray[]) {
     int total = 0;
     for (int i = 0; i < 256; i++) {
@@ -40,7 +35,7 @@ void createFile(char *filename, int frecuencyArray[], int total) {
         fprintf(file, "\n%3x |", i);  // Imprime el valor en hexadecimal
 
         // Imprime el símbolo solo si es imprimible, de lo contrario deja un espacio vacío
-        if (i < 32 || i == 127) {
+        if (i < 32 || i > 126) {
             fprintf(file, "        |");  // Caracteres no imprimibles
         } else {
             fprintf(file, "   %c    |", i);  // Caracteres imprimibles
@@ -90,6 +85,7 @@ int main(int argc, char* argv[]) {
         return 0;
     }
 
+    // procesar todos la lista de archivos
     for (int i=2; i<argc; i++) {
         printf("%s\n", argv[i]);
         processFile(argv[i], frecuency);
@@ -99,7 +95,6 @@ int main(int argc, char* argv[]) {
     file = fopen(argv[1], "r");
     printContent(file);
     printf("\n");
-    printf("Total: %d\n", total);
 
     return 0;
 }
