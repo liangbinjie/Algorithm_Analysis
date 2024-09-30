@@ -27,7 +27,11 @@ This command will generate the executable file.
 
 4. Run the program
 ```bash
+# to generate a frecuency file from all the files provided
 $ ./main <frec_filename> <file_1> <file_2> ... <file_n>
+
+# to print the content of a file
+$ ./main <frec_filename>
 ```
 
 Note: Ensure you have GCC Compiler installed on your system. The Makefile assumes these are available in your system path.
