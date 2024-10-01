@@ -3,16 +3,65 @@
 #include <stdio.h>
 #include "huffman.h"
 
-int test() {
-    char arr[] = { 'a', 'b', 'c', 'd', 'e', 'f' }; 
-    int freq[] = { 5, 9, 12, 13, 16, 45 }; 
-  
-    int size = sizeof(arr) / sizeof(arr[0]); 
-  
-    HuffmanCodes(arr, freq, size); 
-  
-    return 0; 
+void saveCode(int frecuencyArray[], char *headerFile) {
+    // Contar el número de símbolos con frecuencia > 0
+    int uniqueSymbolsCount = 0;
+    for (int i = 0; i < 256; i++) {
+        if (frecuencyArray[i] > 0) {
+            uniqueSymbolsCount++;
+        }
+    }
+
+    char symbols[uniqueSymbolsCount];
+    int freq[uniqueSymbolsCount];
+    int index = 0;
+
+    for (int i = 0; i < 256; i++) {
+        if (frecuencyArray[i] > 0) {
+            symbols[index] = (char)i;
+            freq[index] = frecuencyArray[i];
+            index++;
+        }
+    }
+
+    int size = uniqueSymbolsCount;
+    char *codes[uniqueSymbolsCount];
+
+    for (int i = 0; i < uniqueSymbolsCount; i++) {
+        codes[i] = NULL;
+    }
+
+    HuffmanCodes(symbols, freq, size, codes);
+
+    FILE *file;
+    file = fopen(headerFile, "w");
+
+    fprintf(file, "#ifndef HUFFMAN_CODES_H\n");
+    fprintf(file, "#define HUFFMAN_CODES_H\n\n");
+
+    fprintf(file, "typedef struct {\n");
+    fprintf(file, "    char symbol;\n");
+    fprintf(file, "    char *code;\n");
+    fprintf(file, "} HuffmanCode;\n\n");
+
+    fprintf(file, "HuffmanCode huffmanCodes[] = {\n");
+
+    // Escribimos los símbolos y sus códigos en el archivo .h
+    for (int i = 0; i < size; i++) {
+        fprintf(file, "    { '%c', \"%s\" },\n", symbols[i], codes[i]);
+    }
+
+    fprintf(file, "};\n\n");
+    fprintf(file, "#endif // HUFFMAN_CODES_H\n");
+
+    fclose(file);
+
+    // Liberar memoria de los códigos
+    for (int i = 0; i < size; i++) {
+        free(codes[i]);
+    }
 }
+
 
 void processFile(char *filename, int frecuencyArray[]) {
     FILE *file;
@@ -98,8 +147,7 @@ int main(int argc, char* argv[]) {
         createFile(argv[1], frecuency);
     } 
 
-    test();
-
+    saveCode(frecuency, "huffman_codes.h");
 
     return 0;
 }
