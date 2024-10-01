@@ -23,7 +23,7 @@ HuffmanNode* createNode(char caracter, int freq);
 HuffmanNode* buildHuffmanTree(char data[], int freq[], int size);
 int isSizeOne(MinHeap* minHeap);
 int isLeaf(HuffmanNode* root); 
-void printCodes(HuffmanNode* root, int arr[], int top);
-void HuffmanCodes(char data[], int freq[], int size);
+void printCodes(HuffmanNode* root, int arr[], int top, char* codes[], char symbols[], int size);
+void HuffmanCodes(char data[], int freq[], int size, char* codes[]);
 
 #endif

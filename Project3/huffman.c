@@ -124,38 +124,38 @@ int isLeaf(HuffmanNode* root)
     return !(root->left) && !(root->right); 
 } 
 
-void printCodes(HuffmanNode* root, int arr[], 
-                int top) 
-  
-{ 
-  
+void printCodes(HuffmanNode* root, int arr[], int top, char* codes[], char symbols[], int size) {
     if (root->left) { 
-  
         arr[top] = 0; 
-        printCodes(root->left, arr, top + 1); 
-    } 
+        printCodes(root->left, arr, top + 1, codes, symbols, size); 
+    }
   
     if (root->right) { 
-  
         arr[top] = 1; 
-        printCodes(root->right, arr, top + 1); 
-    } 
+        printCodes(root->right, arr, top + 1, codes, symbols, size); 
+    }
   
-    if (isLeaf(root)) { 
-  
-        printf("%c: ", root->character); 
-        printArr(arr, top); 
-    } 
-} 
+    if (isLeaf(root)) {
+        // Convertir el array de 0s y 1s en un string y almacenarlo en codes[]
+        char code[top + 1];
+        for (int i = 0; i < top; i++) {
+            code[i] = arr[i] + '0';  // Convertir de entero a char ('0' o '1')
+        }
+        code[top] = '\0';  // Terminar el string
 
-void HuffmanCodes(char data[], int freq[], int size) 
-  
-{ 
-    HuffmanNode* root 
-        = buildHuffmanTree(data, freq, size); 
-  
+        // Encontrar el índice del símbolo actual en el arreglo symbols[]
+        for (int i = 0; i < size; i++) {
+            if (symbols[i] == root->character) {
+                codes[i] = strdup(code);  // Almacenar el código
+                break;
+            }
+        }
+    }
+}
 
-    int arr[100], top = 0; 
-  
-    printCodes(root, arr, top); 
-} 
+
+void HuffmanCodes(char data[], int freq[], int size, char* codes[]) {
+    HuffmanNode* root = buildHuffmanTree(data, freq, size);
+    int arr[100], top = 0;
+    printCodes(root, arr, top, codes, data, size);  // Pasar codes[] para almacenar los códigos
+}
