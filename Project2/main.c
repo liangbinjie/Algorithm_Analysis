@@ -4,33 +4,22 @@
 
 // procesa un archivo <filename> y llena el array <frecuencyArray> con las frecuencias de cada byte
 // cierra el archivo despues de procesarlo
-void processFile(char *filename, int frecuencyArray[]) {
+void processFile(char *filename, int frequencyArray[]) {
     FILE *file;
     file = fopen(filename, "rb");
     unsigned char byte;
     while (fread(&byte, 1, 1, file)) {
-        frecuencyArray[byte]++;
+        frequencyArray[byte] += 1;
     }
-
     fclose(file);
-
-}
-
-// retorna la suma de todas las frecuencias
-int frecuencyTotal(int frecuencyArray[]) {
-    int total = 0;
-    for (int i = 0; i < 256; i++) {
-        total += frecuencyArray[i];
-    }
-    return total;
 }
 
 // crea un archivo con el nombre <filename> y escribe la tabla de frecuencias
-void createFile(char *filename, int frecuencyArray[], int total) {
+void createFile(char *filename, int frequencyArray[]) {
     
     FILE *file;
     file = fopen(filename, "w");
-    fprintf(file, "Hex | Symbol | Frecuency");
+    fprintf(file, "Hex | Symbol | Frequency");
     for (int i = 0; i < 256; i++) {
         fprintf(file, "\n%3x |", i);  // Imprime el valor en hexadecimal
 
@@ -42,8 +31,7 @@ void createFile(char *filename, int frecuencyArray[], int total) {
         }
 
         // Imprime la frecuencia
-        fprintf(file, " %f", (double)frecuencyArray[i]/total);
-        // fprintf(file, " %f", (double)frecuencyArray[i])/1;
+        fprintf(file, " %d",frequencyArray[i]);
     }
     fclose(file);
 }
@@ -61,37 +49,56 @@ void printContent(FILE *file) {
 // ./main <file-frec> <file-1> <file-2> ... <file-n>
 int main(int argc, char* argv[]) {
     // array para tener el conteo de cada frecuencia
-    int frecuency[256] = {0};
+    FILE *file;
 
+    // si no se ingresa ningun archivo
+    // se imprime un mensaje de error
     if (argc == 1) {
-        // no se recibio ningun archivo
         printf("No se ingreso un archivo para ejecutar el programa\n");
         return 0;
     }
 
-    FILE *file;
     file = fopen(argv[1], "r");
-    if (file == NULL) {
-        // si no existe <file-frec>, lo crea
-        createFile(argv[1], frecuency, 1);
+
+    // si el archivo no existe y no se tiene ingreso de archivos
+    if (file == NULL && argc == 2) {
+        printf("No existe el archivo\n");
+        return 0;
     }
 
-    if (argc == 2) {
-        // se recibe solamente <file-frec>
-        // mostrar contenido
+    // si se recibe solamente <file-frec> y existe
+    // mostrar contenido
+    if (file != NULL && argc == 2) {
         file = fopen(argv[1], "r");
         printContent(file);
         printf("\n");
         return 0;
     }
 
-    // procesar todos la lista de archivos
+    // si no ocurre ninguno de los casos anteriores
+    // procesar toda la lista de archivos
+    int frequencyArray[256] = {0};
+    int frequency;
+    char buffer[256];
+    if (file != NULL) {
+        // extraemos las frecuencias del archivo
+        int i = 0;
+        fgets(buffer, sizeof(buffer), file);
+        while (fgets(buffer, sizeof(buffer), file)) {
+            if (sscanf(buffer, " %*x | %*s | %d", &frequency) == 1) {
+                frequencyArray[i] = frequency;
+            }
+            i++;
+        }
+    }
+
+    // procesar los archivos
     for (int i=2; i<argc; i++) {
-        printf("%s\n", argv[i]);
-        processFile(argv[i], frecuency);
+        processFile(argv[i], frequencyArray);
     } 
-    int total = frecuencyTotal(frecuency);
-    createFile(argv[1], frecuency, total);
+    
+    // crear archivo con la tabla de frecuencias
+    createFile(argv[1], frequencyArray);
     file = fopen(argv[1], "r");
     printContent(file);
     printf("\n");
