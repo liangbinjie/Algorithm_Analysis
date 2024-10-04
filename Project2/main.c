@@ -7,6 +7,10 @@
 void processFile(char *filename, int frequencyArray[]) {
     FILE *file;
     file = fopen(filename, "rb");
+    if (file == NULL) {
+        printf("No se pudo abrir el archivo %s\n", filename);
+        return;
+    }
     unsigned char byte;
     while (fread(&byte, 1, 1, file)) {
         frequencyArray[byte] += 1;
