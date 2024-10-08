@@ -1,14 +1,16 @@
+
+
+
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include "huffman.h"
 
-
-void saveCode(int frecuencyArray[], char *headerFile1) {
+void saveCode(int frecuencyArray[], char *headerFile) {
     // Contar el número de símbolos con frecuencia > 0
     int uniqueSymbolsCount = 0;
     for (int i = 0; i < 256; i++) {
-        if (frecuencyArray[i] >= 0) {
+        if (frecuencyArray[i] > 0) {
             uniqueSymbolsCount++;
         }
     }
@@ -18,7 +20,7 @@ void saveCode(int frecuencyArray[], char *headerFile1) {
     int index = 0;
 
     for (int i = 0; i < 256; i++) {
-        if (frecuencyArray[i] >= 0) {
+        if (frecuencyArray[i] > 0) {
             symbols[index] = (char)i;
             freq[index] = frecuencyArray[i];
             index++;
@@ -31,26 +33,31 @@ void saveCode(int frecuencyArray[], char *headerFile1) {
     for (int i = 0; i < uniqueSymbolsCount; i++) {
         codes[i] = NULL;
     }
-    HuffmanCodes(symbols, freq, size, codes, "huffman_tree.h");
 
-    // Generate huffman_codes.h
-    FILE *codesFile;
-    codesFile = fopen(headerFile1, "w");
+    HuffmanCodes(symbols, freq, size, codes);
 
-    fprintf(codesFile, "#ifndef HUFFMAN_CODES_H\n");
-    fprintf(codesFile, "#define HUFFMAN_CODES_H\n\n");
+    FILE *file;
+    file = fopen(headerFile, "w");
 
-    fprintf(codesFile, "HuffmanCode huffmanCodes[] = {\n");
+    fprintf(file, "#ifndef HUFFMAN_CODES_H\n");
+    fprintf(file, "#define HUFFMAN_CODES_H\n\n");
 
-    // Write symbols and their codes
+    fprintf(file, "typedef struct {\n");
+    fprintf(file, "    char symbol;\n");
+    fprintf(file, "    char *code;\n");
+    fprintf(file, "} HuffmanCode;\n\n");
+
+    fprintf(file, "HuffmanCode huffmanCodes[] = {\n");
+
+    // Escribimos los símbolos y sus códigos en el archivo .h
     for (int i = 0; i < size; i++) {
-        fprintf(codesFile, "    { '%c', \"%s\" },\n", symbols[i], codes[i]);
+        fprintf(file, "    { '%c', \"%s\" },\n", symbols[i], codes[i]);
     }
 
-    fprintf(codesFile, "};\n\n");
-    fprintf(codesFile, "#endif // HUFFMAN_CODES_H\n");
+    fprintf(file, "};\n\n");
+    fprintf(file, "#endif // HUFFMAN_CODES_H\n");
 
-    fclose(codesFile);
+    fclose(file);
 
     // Liberar memoria de los códigos
     for (int i = 0; i < size; i++) {
@@ -59,16 +66,9 @@ void saveCode(int frecuencyArray[], char *headerFile1) {
 }
 
 
-
-// procesa un archivo <filename> y llena el array <frecuencyArray> con las frecuencias de cada byte
-// cierra el archivo despues de procesarlo
 void processFile(char *filename, int frequencyArray[]) {
     FILE *file;
     file = fopen(filename, "rb");
-    if (file == NULL) {
-        printf("No se pudo abrir el archivo %s\n", filename);
-        return;
-    }
     unsigned char byte;
     while (fread(&byte, 1, 1, file)) {
         frequencyArray[byte] += 1;
@@ -113,9 +113,6 @@ int main(int argc, char* argv[]) {
     // array para tener el conteo de cada frecuencia
     FILE *file;
 
-    int frequencyArray[256] = {0};
-    int frequency;
-    char buffer[256];
     // si no se ingresa ningun archivo
     // se imprime un mensaje de error
     if (argc == 1) {
@@ -136,14 +133,15 @@ int main(int argc, char* argv[]) {
     if (file != NULL && argc == 2) {
         file = fopen(argv[1], "r");
         printContent(file);
-        saveCode(frequencyArray, "huffman_codes.h");
         printf("\n");
         return 0;
     }
 
     // si no ocurre ninguno de los casos anteriores
     // procesar toda la lista de archivos
-    
+    int frequencyArray[256] = {0};
+    int frequency;
+    char buffer[256];
     if (file != NULL) {
         // extraemos las frecuencias del archivo
         int i = 0;
@@ -166,8 +164,10 @@ int main(int argc, char* argv[]) {
     file = fopen(argv[1], "r");
     printContent(file);
     printf("\n");
-    
-    //saveCode(frequencyArray, "huffman_codes.h");
+
+    saveCode(frequencyArray, "huffman_codes.h");
 
     return 0;
 }
+
+necesito guardar el arbol en un.h y los códigos en otro .h distinto al del arbol (serían 2 .h al final), adicionalmente que aunque los caracteres tengan frecuencia 0, generen códigos, neceisto codigos para los 256 cracteres
