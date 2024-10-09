@@ -279,7 +279,8 @@ void HuffmanCodes(char data[], int freq[], int size, char* codes[], char *header
     HuffmanNode* root2 = deserializeTree(file);
     fclose(file);
 
-    printTreeToFile(root2, "tree_structure.txt");
-    printTreeToFile(root, "tree_structure2.txt");
+    printTreeToFile(root2, "tree_structure_deserialized.txt");
+    printTreeToFile(root, "tree_structure_before_serialization.txt");
+
 
 }

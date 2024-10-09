@@ -3,9 +3,7 @@
 #include <stdio.h>
 #include "huffman.h"
 
-
 void saveCode(int frecuencyArray[], char *headerFile1) {
-    // Contar el número de símbolos con frecuencia > 0
     int uniqueSymbolsCount = 0;
     for (int i = 0; i < 256; i++) {
         if (frecuencyArray[i] >= 0) {
@@ -43,7 +41,6 @@ void saveCode(int frecuencyArray[], char *headerFile1) {
 
     fprintf(codesFile, "HuffmanCode huffmanCodes[] = {\n");
 
-    // Write symbols and their codes
     for (int i = 0; i < size; i++) {
         fprintf(codesFile, "    { '%c', \"%s\" },\n", symbols[i], codes[i]);
     }
@@ -53,16 +50,11 @@ void saveCode(int frecuencyArray[], char *headerFile1) {
 
     fclose(codesFile);
 
-    // Liberar memoria de los códigos
     for (int i = 0; i < size; i++) {
         free(codes[i]);
     }
 }
 
-
-
-// procesa un archivo <filename> y llena el array <frecuencyArray> con las frecuencias de cada byte
-// cierra el archivo despues de procesarlo
 void processFile(char *filename, int frequencyArray[]) {
     FILE *file;
     file = fopen(filename, "rb");
@@ -109,14 +101,14 @@ void printContent(FILE *file) {
     fclose(file);
 }
 
-// ./main <file-frec> <file-1> <file-2> ... <file-n>
+// ./main <file-frec>
 int main(int argc, char* argv[]) {
     // array para tener el conteo de cada frecuencia
     FILE *file;
-
     int frequencyArray[256] = {0};
     int frequency;
     char buffer[256];
+
     // si no se ingresa ningun archivo
     // se imprime un mensaje de error
     if (argc == 1) {
@@ -131,21 +123,8 @@ int main(int argc, char* argv[]) {
         printf("No existe el archivo\n");
         return 0;
     }
-
-    // si se recibe solamente <file-frec> y existe
-    // mostrar contenido
-    if (file != NULL && argc == 2) {
-        file = fopen(argv[1], "r");
-        printContent(file);
-        
-        //saveCode(frequencyArray, "huffman_codes.h");
-        printf("\n");
-    }
-
-    // si no ocurre ninguno de los casos anteriores
-    // procesar toda la lista de archivos
     
-    if (file != NULL) {
+    if ( (file != NULL)|| (file != NULL && argc == 2) ) {
         // extraemos las frecuencias del archivo
         int i = 0;
         fgets(buffer, sizeof(buffer), file);
@@ -156,19 +135,10 @@ int main(int argc, char* argv[]) {
             i++;
         }
     }
-
     // procesar los archivos
-    for (int i=2; i<argc; i++) {
-        processFile(argv[i], frequencyArray);
-    } 
-    
-    // crear archivo con la tabla de frecuencias
-    createFile(argv[1], frequencyArray);
     file = fopen(argv[1], "r");
     printContent(file);
     printf("\n");
-    printf("WWWW");
     saveCode(frequencyArray, "huffman_codes.h");
-
     return 0;
 }

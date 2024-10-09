@@ -5,7 +5,7 @@ typedef struct HuffmanNode {
     char character;
     int freq;
     struct HuffmanNode *left;
-    struct HuffmanNode *right
+    struct HuffmanNode *right;
 } HuffmanNode;
 
 typedef struct MinHeap {
