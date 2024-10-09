@@ -31,6 +31,7 @@ void saveCode(int frecuencyArray[], char *headerFile1) {
     for (int i = 0; i < uniqueSymbolsCount; i++) {
         codes[i] = NULL;
     }
+
     HuffmanCodes(symbols, freq, size, codes, "huffman_tree.h");
 
     // Generate huffman_codes.h
@@ -136,9 +137,9 @@ int main(int argc, char* argv[]) {
     if (file != NULL && argc == 2) {
         file = fopen(argv[1], "r");
         printContent(file);
-        saveCode(frequencyArray, "huffman_codes.h");
+        
+        //saveCode(frequencyArray, "huffman_codes.h");
         printf("\n");
-        return 0;
     }
 
     // si no ocurre ninguno de los casos anteriores
@@ -166,8 +167,8 @@ int main(int argc, char* argv[]) {
     file = fopen(argv[1], "r");
     printContent(file);
     printf("\n");
-    
-    //saveCode(frequencyArray, "huffman_codes.h");
+    printf("WWWW");
+    saveCode(frequencyArray, "huffman_codes.h");
 
     return 0;
 }

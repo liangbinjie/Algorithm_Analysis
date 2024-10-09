@@ -24,7 +24,7 @@ HuffmanNode* buildHuffmanTree(char data[], int freq[], int size);
 int isSizeOne(MinHeap* minHeap);
 int isLeaf(HuffmanNode* root); 
 void printCodes(HuffmanNode* root, int arr[], int top, char* codes[], char symbols[], int size);
-void serializeTree(HuffmanNode* root, FILE* file);
+void serializeTree(FILE* file, HuffmanNode* node);
 void deserializeTreeHelper(FILE* file, HuffmanNode** node);
 HuffmanNode* deserializeTree(FILE* file);
 void printTree(HuffmanNode* root);
