@@ -5,7 +5,7 @@ typedef struct HuffmanNode {
     char character;
     int freq;
     struct HuffmanNode *left;
-    struct HuffmanNode *right
+    struct HuffmanNode *right;
 } HuffmanNode;
 
 typedef struct MinHeap {
@@ -24,6 +24,10 @@ HuffmanNode* buildHuffmanTree(char data[], int freq[], int size);
 int isSizeOne(MinHeap* minHeap);
 int isLeaf(HuffmanNode* root); 
 void printCodes(HuffmanNode* root, int arr[], int top, char* codes[], char symbols[], int size);
-void HuffmanCodes(char data[], int freq[], int size, char* codes[]);
+void serializeTree(FILE* file, HuffmanNode* node);
+void deserializeTreeHelper(FILE* file, HuffmanNode** node);
+HuffmanNode* deserializeTree(FILE* file);
+void printTree(HuffmanNode* root);
+void HuffmanCodes(char data[], int freq[], int size, char* codes[], char *headerFile2);
 
 #endif

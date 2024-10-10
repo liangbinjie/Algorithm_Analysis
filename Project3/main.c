@@ -2,12 +2,13 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "huffman.h"
+#define ARRAY_SIZE 256
 
-void saveCode(int frecuencyArray[], char *headerFile) {
-    // Contar el número de símbolos con frecuencia > 0
+
+void saveCode(int frecuencyArray[], char *headerFile1) {
     int uniqueSymbolsCount = 0;
     for (int i = 0; i < 256; i++) {
-        if (frecuencyArray[i] > 0) {
+        if (frecuencyArray[i] >= 0) {
             uniqueSymbolsCount++;
         }
     }
@@ -17,7 +18,7 @@ void saveCode(int frecuencyArray[], char *headerFile) {
     int index = 0;
 
     for (int i = 0; i < 256; i++) {
-        if (frecuencyArray[i] > 0) {
+        if (frecuencyArray[i] >= 0) {
             symbols[index] = (char)i;
             freq[index] = frecuencyArray[i];
             index++;
@@ -31,79 +32,70 @@ void saveCode(int frecuencyArray[], char *headerFile) {
         codes[i] = NULL;
     }
 
-    HuffmanCodes(symbols, freq, size, codes);
+    HuffmanCodes(symbols, freq, size, codes, "huffman_tree.h");
 
-    FILE *file;
-    file = fopen(headerFile, "w");
+    // Generate huffman_codes.h
+    FILE *codesFile;
+    codesFile = fopen(headerFile1, "w");
 
-    fprintf(file, "#ifndef HUFFMAN_CODES_H\n");
-    fprintf(file, "#define HUFFMAN_CODES_H\n\n");
+    fprintf(codesFile, "#ifndef HUFFMAN_CODES_H\n");
+    fprintf(codesFile, "#define HUFFMAN_CODES_H\n\n");
+    fprintf(codesFile, "typedef struct HuffmanCode {\n  unsigned char character;\n  char *code;\n} HuffmanCode;\n\n");
 
-    fprintf(file, "typedef struct {\n");
-    fprintf(file, "    char symbol;\n");
-    fprintf(file, "    char *code;\n");
-    fprintf(file, "} HuffmanCode;\n\n");
+    fprintf(codesFile, "HuffmanCode huffmanCodes[] = {\n");
 
-    fprintf(file, "HuffmanCode huffmanCodes[] = {\n");
-
-    // Escribimos los símbolos y sus códigos en el archivo .h
     for (int i = 0; i < size; i++) {
-        fprintf(file, "    { '%c', \"%s\" },\n", symbols[i], codes[i]);
+        fprintf(codesFile, "    { 0x%02x, \"%s\" },\n", (unsigned char)symbols[i], codes[i]);
     }
 
-    fprintf(file, "};\n\n");
-    fprintf(file, "#endif // HUFFMAN_CODES_H\n");
+    fprintf(codesFile, "};\n\n");
+    fprintf(codesFile, "#endif // HUFFMAN_CODES_H\n");
 
-    fclose(file);
+    fclose(codesFile);
 
-    // Liberar memoria de los códigos
     for (int i = 0; i < size; i++) {
         free(codes[i]);
     }
 }
 
-
-void processFile(char *filename, int frecuencyArray[]) {
+void processFile(char *filename, int frequencyArray[]) {
     FILE *file;
     file = fopen(filename, "rb");
+    if (file == NULL) {
+        printf("No se pudo abrir el archivo %s\n", filename);
+        return;
+    }
     unsigned char byte;
     while (fread(&byte, 1, 1, file)) {
-        
-        frecuencyArray[byte]++;
-
-        if (byte >= 32 && byte <= 126) {  
-            printf("Carácter: '%c' | En ASCII: %d (0x%x)\n", byte, byte, byte);
-        } else {
-            printf("No es imprimible | En ASCII: %d (0x%x)\n", byte, byte);
-        }
+        frequencyArray[byte] += 1;
     }
-
     fclose(file);
-
 }
 
 // crea un archivo con el nombre <filename> y escribe la tabla de frecuencias
-void createFile(char *filename, int frecuencyArray[]) {
+void createFile(char *filename, int frequencyArray[]) {
+    
     FILE *file;
     file = fopen(filename, "w");
-    fprintf(file, "Hex | Symbol | Frecuency");
+    fprintf(file, "Hex | Symbol | Frequency");
     for (int i = 0; i < 256; i++) {
-        fprintf(file, "%3x |", i);  // Imprime el valor en hexadecimal
+        fprintf(file, "\n%3x |", i);  // Imprime el valor en hexadecimal
 
         // Imprime el símbolo solo si es imprimible, de lo contrario deja un espacio vacío
-        if (i < 32 || i == 127) {
+        if (i < 32 || i > 126) {
             fprintf(file, "        |");  // Caracteres no imprimibles
         } else {
             fprintf(file, "   %c    |", i);  // Caracteres imprimibles
         }
 
         // Imprime la frecuencia
-        fprintf(file, "   %d\n", frecuencyArray[i]);
+        fprintf(file, " %d",frequencyArray[i]);
     }
     fclose(file);
 }
 
-// imprime el contenido de un archivo <file>
+// - Imprime el contenido de un archivo <file>
+// - Cierra archivo despues de leerlo
 void printContent(FILE *file) {
     char buffer[256];
     while (fgets(buffer, sizeof(buffer), file)) {
@@ -112,42 +104,96 @@ void printContent(FILE *file) {
     fclose(file);
 }
 
-// ./main <file-frec> <file-1> <file-2> ... <file-n>
+void saveFrequenciesToFile(char *filename, int frequencyArray[]) {
+    FILE *file;
+    file = fopen(filename, "w");
+    if (file == NULL) {
+        printf("No se pudo abrir el archivo %s para escribir\n", filename);
+        return;
+    }
+
+    fprintf(file, "Hex | Frequency\n");
+    for (int i = 0; i < ARRAY_SIZE; i++) {
+        if (frequencyArray[i] > 0) {
+            fprintf(file, "0x%02x | %d\n", i, frequencyArray[i]);
+        }
+    }
+
+    fclose(file);
+}
+
+// ./main <file-frec>
 int main(int argc, char* argv[]) {
     // array para tener el conteo de cada frecuencia
-    int frecuency[256] = {0};
+    FILE *file;
+    int frequencyArray[256] = {0};
+    int frequency;
 
+    // si no se ingresa ningun archivo
+    // se imprime un mensaje de error
     if (argc == 1) {
-        // no se recibio ningun archivo
         printf("No se ingreso un archivo para ejecutar el programa\n");
         return 0;
     }
 
-    FILE *file;
     file = fopen(argv[1], "r");
-    if (file == NULL) {
-        // si no existe <file-frec>, lo crea
-        createFile(argv[1], frecuency);
-    }
 
-    if (argc == 2) {
-        // se recibe solamente <file-frec>
-        // mostrar contenido
-        file = fopen(argv[1], "r");
-        printContent(file);
-        printf("\n");
+    // si el archivo no existe y no se tiene ingreso de archivos
+    if (file == NULL && argc == 2) {
+        printf("No existe el archivo\n");
         return 0;
     }
-
     
+    if ( (file != NULL)|| (file != NULL && argc == 2) ) {
+        // extraemos las frecuencias del archivo
+        // int hexValue;
 
-    for (int i=2; i<argc; i++) {
-        printf("%s\n", argv[i]);
-        processFile(argv[i], frecuency);
-        createFile(argv[1], frecuency);
-    } 
+    // Leer la cabecera del archivo
+    int index = 0;    // Contador para las posiciones en el array
+    char buffer[256]; // Buffer para leer cada línea del archivo
+    char *dataStart;  // Puntero para saltar los primeros 14 caracteres
 
-    saveCode(frecuency, "huffman_codes.h");
+    // Leer la cabecera del archivo
+    fgets(buffer, sizeof(buffer), file); // Salta la primera línea (la cabecera)
 
+    // Procesar cada línea del archivo
+    while (fgets(buffer, sizeof(buffer), file)) {
+        // Saltar los primeros 14 caracteres (para ignorar el símbolo)
+        dataStart = buffer + 14;
+
+        // Leer solo la frecuencia desde el carácter 14
+        if (sscanf(dataStart, "%d", &frequency) == 1) {
+            // Asignar la frecuencia a la posición actual del array
+            frequencyArray[index] = frequency;
+
+            // Mensaje de depuración
+            printf("Índice: %d, Frecuencia: %d\n", index, frequency);
+
+            // Incrementar el índice para la siguiente posición del array
+            index++;
+
+            // Verificamos que no nos pasemos del tamaño del array
+            if (index > 255) {
+                printf("Se ha alcanzado el límite del array.\n");
+                break;
+            }
+        } else {
+            // Mensaje de depuración para formato incorrecto
+            printf("Formato incorrecto o frecuencia no válida: %s\n", buffer);
+        }
+    }
+
+    }
+    // procesar los archivos
+    file = fopen(argv[1], "r");
+    printContent(file);
+    printf("\n");
+    printf("Contenido del array: ");
+    for (int i = 0; i < 256; i++) {
+        printf("%d ", frequencyArray[i]);  // Imprimir el elemento actual
+    }
+    printf("\n");
+    saveFrequenciesToFile("frequencies.txt", frequencyArray);
+    saveCode(frequencyArray, "huffman_codes.h");
     return 0;
 }

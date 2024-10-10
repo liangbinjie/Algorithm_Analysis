@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 #include <stdlib.h>
 #include "huffman.h"
 
@@ -87,6 +88,7 @@ MinHeap* createAndBuildMinHeap(char data[], int freq[], int size) {
 }
 
 HuffmanNode* buildHuffmanTree(char data[], int freq[], int size) {
+    // printf("HOLA; EMPECAREA  CREAR");
     HuffmanNode *left, *right, *top;
     MinHeap* minHeap = createAndBuildMinHeap(data, freq, size);
 
@@ -98,7 +100,7 @@ HuffmanNode* buildHuffmanTree(char data[], int freq[], int size) {
         top->right = right;
         insertMinHeap(minHeap, top);
     }
-
+    // printf("HOLA termine  CREAR");
     return extractMin(minHeap);  // The root node
 }
 
@@ -153,9 +155,129 @@ void printCodes(HuffmanNode* root, int arr[], int top, char* codes[], char symbo
     }
 }
 
+void serializeTree(FILE* file, HuffmanNode* node) {
+    if (node == NULL) {
+        return;
+    }
 
-void HuffmanCodes(char data[], int freq[], int size, char* codes[]) {
+    if (node->left == NULL && node->right == NULL) {
+        // Leaf node
+        fprintf(file, "1:%02X:%d ", (unsigned char)node->character, node->freq);
+    } else {
+        // Internal node
+        fprintf(file, "0:%d ", node->freq);
+        serializeTree(file, node->left);
+        serializeTree(file, node->right);
+    }
+}
+
+
+
+
+HuffmanNode* deserializeTree(FILE* file) {
+    int flag;
+    unsigned int hexVal;
+    int frequency;
+
+    // Read the flag indicating the type of node (leaf or internal)
+    if (fscanf(file, "%d", &flag) != 1) {
+        fprintf(stderr, "Error reading flag\n");
+        return NULL;  // End of file or error
+    }
+
+    HuffmanNode* node = (HuffmanNode*)malloc(sizeof(HuffmanNode));
+    if (!node) {
+        fprintf(stderr, "Memory allocation failed\n");
+        return NULL;
+    }
+
+    if (flag == 1) {
+        // Leaf node: read character as hex and frequency
+        if (fscanf(file, ":%02X:%d", &hexVal, &frequency) == 2) {
+            node->character = (char)hexVal;
+            node->freq = frequency;
+            node->left = node->right = NULL;
+        } else {
+            fprintf(stderr, "Error reading hex value or frequency\n");
+            free(node);  // Free allocated memory if reading fails
+            return NULL;  // Handle unexpected format
+        }
+    } else {
+        // Internal node: read frequency
+        if (fscanf(file, ":%d", &frequency) == 1) {
+            node->character = '\0';  // Internal nodes do not have characters
+            node->freq = frequency;
+            node->left = deserializeTree(file);
+            node->right = deserializeTree(file);
+        } else {
+            fprintf(stderr, "Error reading frequency\n");
+            free(node);  // Free allocated memory if reading fails
+            return NULL;  // Handle unexpected format
+        }
+    }
+
+    return node;
+}
+
+
+// Helper function to print the tree (pre-order traversal)
+void printTreeHelperToFile(HuffmanNode* root, int depth, FILE* file) {
+    if (root == NULL) {
+        for (int i = 0; i < depth; i++) fprintf(file, "  ");
+        fprintf(file, "NULL\n");
+        return;
+    }
+
+    for (int i = 0; i < depth; i++) fprintf(file, "  ");
+    if (root->left == NULL && root->right == NULL) {
+        fprintf(file, "Leaf: '%c' (Freq: %d)\n", root->character, root->freq);
+    } else {
+        fprintf(file, "Internal Node (Freq: %d)\n", root->freq);
+    }
+
+    printTreeHelperToFile(root->left, depth + 1, file);
+    printTreeHelperToFile(root->right, depth + 1, file);
+}
+
+void printTreeToFile(HuffmanNode* root, const char* filename) {
+    FILE* file = fopen(filename, "w");
+    if (!file) {
+        fprintf(stderr, "Error opening file for writing\n");
+        return;
+    }
+    printTreeHelperToFile(root, 0, file);
+    fclose(file);
+}
+
+
+
+
+
+void HuffmanCodes(char data[], int freq[], int size, char* codes[], char *headerFile2) {
     HuffmanNode* root = buildHuffmanTree(data, freq, size);
-    int arr[100], top = 0;
-    printCodes(root, arr, top, codes, data, size);  // Pasar codes[] para almacenar los códigos
+
+    // Abrir archivo para escribir el árbol serializado
+    FILE *treeFile = fopen(headerFile2, "w");
+    
+    serializeTree(treeFile, root);
+
+    
+    fclose(treeFile);
+
+    // Imprimir códigos de Huffman
+    int arr[256], top = 0;
+    printCodes(root, arr, top, codes, data, size);
+
+    FILE* file = fopen("huffman_tree.h", "r");
+    if (!file) {
+        fprintf(stderr, "Error opening file\n");
+    }
+
+    HuffmanNode* root2 = deserializeTree(file);
+    fclose(file);
+
+    printTreeToFile(root2, "tree_structure_deserialized.txt");
+    printTreeToFile(root, "tree_structure_before_serialization.txt");
+
+
 }
