@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "huffman.h"
+#define ARRAY_SIZE 256
+
 
 void saveCode(int frecuencyArray[], char *headerFile1) {
     int uniqueSymbolsCount = 0;
@@ -41,8 +43,10 @@ void saveCode(int frecuencyArray[], char *headerFile1) {
 
     fprintf(codesFile, "HuffmanCode huffmanCodes[] = {\n");
 
+    
+
     for (int i = 0; i < size; i++) {
-        fprintf(codesFile, "    { '%c', \"%s\" },\n", symbols[i], codes[i]);
+        fprintf(codesFile, "    { 0x%02x, \"%s\" },\n", (unsigned char)symbols[i], codes[i]);
     }
 
     fprintf(codesFile, "};\n\n");
@@ -101,6 +105,24 @@ void printContent(FILE *file) {
     fclose(file);
 }
 
+void saveFrequenciesToFile(char *filename, int frequencyArray[]) {
+    FILE *file;
+    file = fopen(filename, "w");
+    if (file == NULL) {
+        printf("No se pudo abrir el archivo %s para escribir\n", filename);
+        return;
+    }
+
+    fprintf(file, "Hex | Frequency\n");
+    for (int i = 0; i < ARRAY_SIZE; i++) {
+        if (frequencyArray[i] > 0) {
+            fprintf(file, "0x%02x | %d\n", i, frequencyArray[i]);
+        }
+    }
+
+    fclose(file);
+}
+
 // ./main <file-frec>
 int main(int argc, char* argv[]) {
     // array para tener el conteo de cada frecuencia
@@ -126,19 +148,56 @@ int main(int argc, char* argv[]) {
     
     if ( (file != NULL)|| (file != NULL && argc == 2) ) {
         // extraemos las frecuencias del archivo
-        int i = 0;
-        fgets(buffer, sizeof(buffer), file);
-        while (fgets(buffer, sizeof(buffer), file)) {
-            if (sscanf(buffer, " %*x | %*s | %d", &frequency) == 1) {
-                frequencyArray[i] = frequency;
-            }
-            i++;
+        int hexValue;
+
+// Leer la cabecera del archivo
+int index = 0;    // Contador para las posiciones en el array
+char buffer[256]; // Buffer para leer cada línea del archivo
+char *dataStart;  // Puntero para saltar los primeros 14 caracteres
+
+// Leer la cabecera del archivo
+fgets(buffer, sizeof(buffer), file); // Salta la primera línea (la cabecera)
+
+// Procesar cada línea del archivo
+while (fgets(buffer, sizeof(buffer), file)) {
+    // Saltar los primeros 14 caracteres (para ignorar el símbolo)
+    dataStart = buffer + 14;
+
+    // Leer solo la frecuencia desde el carácter 14
+    if (sscanf(dataStart, "%d", &frequency) == 1) {
+        // Asignar la frecuencia a la posición actual del array
+        frequencyArray[index] = frequency;
+
+        // Mensaje de depuración
+        printf("Índice: %d, Frecuencia: %d\n", index, frequency);
+
+        // Incrementar el índice para la siguiente posición del array
+        index++;
+
+        // Verificamos que no nos pasemos del tamaño del array
+        if (index > 255) {
+            printf("Se ha alcanzado el límite del array.\n");
+            break;
         }
+    } else {
+        // Mensaje de depuración para formato incorrecto
+        printf("Formato incorrecto o frecuencia no válida: %s\n", buffer);
+    }
+}
+
+
+
     }
     // procesar los archivos
     file = fopen(argv[1], "r");
     printContent(file);
     printf("\n");
+    printf("Contenido del array: ");
+    for (int i = 0; i < 256; i++) {
+        printf("%d ", frequencyArray[i]);  // Imprimir el elemento actual
+    }
+    printf("\n");
+    saveFrequenciesToFile("frequencies.txt", frequencyArray);
     saveCode(frequencyArray, "huffman_codes.h");
     return 0;
 }
