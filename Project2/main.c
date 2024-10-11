@@ -86,14 +86,45 @@ int main(int argc, char* argv[]) {
     char buffer[256];
     if (file != NULL) {
         // extraemos las frecuencias del archivo
-        int i = 0;
-        fgets(buffer, sizeof(buffer), file);
+        // int i = 0;
+        // fgets(buffer, sizeof(buffer), file);
+        // while (fgets(buffer, sizeof(buffer), file)) {
+        //     if (sscanf(buffer, " %*x | %*s | %d", &frequency) == 1) {
+        //         frequencyArray[i] = frequency;
+        //     }
+        //     i++;
+        // }
+
+        int index = 0;    // Contador para las posiciones en el array
+        char *dataStart;  // Puntero para saltar los primeros 14 caracteres
+
+
         while (fgets(buffer, sizeof(buffer), file)) {
-            if (sscanf(buffer, " %*x | %*s | %d", &frequency) == 1) {
-                frequencyArray[i] = frequency;
+        // Saltar los primeros 14 caracteres (para ignorar el símbolo)
+        dataStart = buffer + 14;
+
+        // Leer solo la frecuencia desde el carácter 14
+        if (sscanf(dataStart, "%d", &frequency) == 1) {
+            // Asignar la frecuencia a la posición actual del array
+            frequencyArray[index] = frequency;
+
+            // Mensaje de depuración
+            printf("Índice: %d, Frecuencia: %d\n", index, frequency);
+
+            // Incrementar el índice para la siguiente posición del array
+            index++;
+
+            // Verificamos que no nos pasemos del tamaño del array
+            if (index > 255) {
+                printf("Se ha alcanzado el límite del array.\n");
+                break;
             }
-            i++;
+        } else {
+            // Mensaje de depuración para formato incorrecto
+            printf("Formato incorrecto o frecuencia no válida: %s\n", buffer);
         }
+    }
+
     }
 
     // procesar los archivos
