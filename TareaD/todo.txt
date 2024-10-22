@@ -1,0 +1,40 @@
+cantidad de reinas
+nodos visitados por exh
+nodos visitados por fact
+nodos visitados por back
+nodos promising por back
+nodos que sean solucion hallado por backtracking
+nodos visitados por monte carlo (al menos 1000 ejecuciones)
+
+
+
+-> si N > 16 mostrar columna 4,5,6 ---
+
+
+void MC_queens(int n) {
+    int i, j, col[n];
+    int m, mprod, E;
+
+    i = 0;
+    E = 1; m = 1; mprod = 1;
+    while (m != 0 && i != n) {
+        // Estimar numnodos
+         mprod = mprod * m;
+         E = E+mprod * n;
+         i++;
+         m = 0;
+         promising_children = conjunto vacio;
+         for (j=1; j<=n; j++) {
+            col[i] = j;
+            if (promising(i)) {
+                m++;
+                agregar {j} a promising_children;
+            }
+         }
+         if (m != 0) {
+            j = selccion aleatoria de promising_children;
+            col[i] = j;
+         }
+    }
+    return (E);
+}
