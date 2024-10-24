@@ -8,7 +8,7 @@ void processFile(char *filename, int frequencyArray[]) {
     FILE *file;
     file = fopen(filename, "rb");
     if (file == NULL) {
-        printf("No se pudo abrir el archivo %s\n", filename);
+        printf("No se pudo abrir el archivo: %s\n", filename);
         return;
     }
     unsigned char byte;

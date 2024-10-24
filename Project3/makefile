@@ -1,10 +1,10 @@
 CC = gcc
 CFLAGS = -Wall -g
 
-all: main
+all: main3
 
-main: main.o huffman.o
-	$(CC) $(CFLAGS) main.o huffman.o -o main
+main3: main.o huffman.o
+	$(CC) $(CFLAGS) main.o huffman.o -o main3
 
 main.o: main.c huffman.h
 	$(CC) $(CFLAGS) -c main.c
@@ -13,4 +13,4 @@ huffman.o: huffman.c huffman.h
 	$(CC) $(CFLAGS) -c huffman.c
 
 clean:
-	rm -f *.o main
+	rm -f *.o main3
