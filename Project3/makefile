@@ -3,8 +3,8 @@ CFLAGS = -Wall -g
 
 all: main3
 
-main3: main.o huffman.o
-	$(CC) $(CFLAGS) main.o huffman.o -o main3
+main3: main3.o huffman.o
+	$(CC) $(CFLAGS) main3.o huffman.o -o main3
 
 main.o: main.c huffman.h
 	$(CC) $(CFLAGS) -c main.c

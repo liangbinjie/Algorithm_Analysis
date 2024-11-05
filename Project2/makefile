@@ -1,5 +1,5 @@
-main2: main.c 
-	gcc main.c -o main2
+main2: main2.c 
+	gcc main2.c -o main2
 
 clean:
-	rm -f *.o a.out
+	rm -f *.o main2

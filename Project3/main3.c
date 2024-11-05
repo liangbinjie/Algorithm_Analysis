@@ -167,14 +167,14 @@ int main(int argc, char* argv[]) {
             frequencyArray[index] = frequency;
 
             // Mensaje de depuración
-            printf("Índice: %d, Frecuencia: %d\n", index, frequency);
+            // printf("Índice: %d, Frecuencia: %d\n", index, frequency);
 
             // Incrementar el índice para la siguiente posición del array
             index++;
 
             // Verificamos que no nos pasemos del tamaño del array
             if (index > 255) {
-                printf("Se ha alcanzado el límite del array.\n");
+                // printf("Se ha alcanzado el límite del array.\n");
                 break;
             }
         } else {
@@ -185,15 +185,16 @@ int main(int argc, char* argv[]) {
 
     }
     // procesar los archivos
-    file = fopen(argv[1], "r");
-    printContent(file);
-    printf("\n");
-    printf("Contenido del array: ");
-    for (int i = 0; i < 256; i++) {
-        printf("%d ", frequencyArray[i]);  // Imprimir el elemento actual
-    }
-    printf("\n");
+    // file = fopen(argv[1], "r");
+    // printContent(file);
+    // printf("\n");
+    // printf("Contenido del array: ");
+    // for (int i = 0; i < 256; i++) {
+        // printf("%d ", frequencyArray[i]);  // Imprimir el elemento actual
+    // }
+    // printf("\n");
     saveFrequenciesToFile("frequencies.txt", frequencyArray);
     saveCode(frequencyArray, "huffman_codes.h");
+    printf("Se ha creado el archivo huffman_codes.h\n");
     return 0;
 }
